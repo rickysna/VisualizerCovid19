@@ -25,8 +25,8 @@ export class Tooltip {
     centralTooltipPosition() {
         let axis = {x: 0, y: 0};
         const boxSize = MapManager.polygonSeries.dom.getBBox();
-        axis.x = boxSize.x + boxSize.width / 2 - 40;
-        axis.y = boxSize.y + boxSize.height / 2;
+        axis.x = boxSize.x + boxSize.width / 2;
+        axis.y = boxSize.y + boxSize.height / 2 - 20;
         MapManager.polygonSeries.tooltip.events.onAll((name, ev) => {
             ev.target.animations.forEach((animation) => {
                 animation.duration = 1500;
@@ -53,9 +53,6 @@ export class Tooltip {
             MapManager.polygonSeries.tooltip.x = spritePoint.x - 40;
             MapManager.polygonSeries.tooltip.y = spritePoint.y;
         });
-        // MapManager.polygonSeries.tooltip.dom.querySelector('img').onload = () => {
-        //
-        // }
     }
     editTemplate(data:CountryData) {
         const timeSeries = data.timeseries;
@@ -71,6 +68,21 @@ export class Tooltip {
         // const recovered_cases_difference = timeSeries ? this.getNumberDifference(timeSeries, 'recovered') : 0;
         // const recovered_cases_math_prefix = recovered_cases_difference < 0 ? '-' : '+';
         // const recovered_cases_difference_template = recovered_cases_difference ? `<span class="changed">${recovered_cases_math_prefix}${recovered_cases_difference} <span class="time">(since a day ago)</span></span><br>` : '';
+        if (data.timeseries === undefined && data.reports === undefined) {
+            return `
+                <div class="earth-overlay">
+                    <img src="{flag}">
+                    <div class="title">
+                        <span>
+                            <em>{name}</em>
+                            <span><br>
+                                <span class="tiny">None</span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            `
+        }
         return `
             <div class="earth-overlay">
                 <img src="{flag}">
