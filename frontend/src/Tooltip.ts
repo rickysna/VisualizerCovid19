@@ -1,17 +1,17 @@
 import {MapPolygon, MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {CountryData, TimeSeries} from "./models/MapData";
 import {ListTemplate} from "@amcharts/amcharts4/.internal/core/utils/List";
+import {MapManager} from "./MapManager";
+import {Map} from "./Map";
 
 export class Tooltip {
-    constructor(mapPolygons: ListTemplate<MapPolygon>) {
-        mapPolygons.each((mapPolygon, index) => {
+    constructor() {
+        MapManager.polygonSeries.mapPolygons.each((mapPolygon, index) => {
             const dataContext:any = mapPolygon.dataItem.dataContext;
             if (dataContext !== undefined) {
-                // if (index === 0)
-                //     mapPolygon.tooltip.events.on('transformed', ev => {
-                //         console.log(ev.target.animations);
-                //         debugger;
-                //     });
+                    // mapPolygon.tooltip.events.onAll(ev => {
+                    //     console.log(ev);
+                    // });
 
                 mapPolygon.tooltip.background.disabled = true;
                 mapPolygon.tooltipPosition = 'fixed';
@@ -20,6 +20,42 @@ export class Tooltip {
                 mapPolygon.tooltipHTML = this.editTemplate(mapPolygon.dataItem.dataContext);
             }
         });
+        this.centralTooltipPosition();
+    }
+    centralTooltipPosition() {
+        let axis = {x: 0, y: 0};
+        const boxSize = MapManager.polygonSeries.dom.getBBox();
+        axis.x = boxSize.x + boxSize.width / 2 - 40;
+        axis.y = boxSize.y + boxSize.height / 2;
+        MapManager.polygonSeries.tooltip.events.onAll((name, ev) => {
+            ev.target.animations.forEach((animation) => {
+                animation.duration = 1500;
+                animation.animationOptions.forEach(options => {
+                    if (options.property === 'x') {
+                        options.to = axis.x;
+                    } else if (options.property === 'y') {
+                        options.to = axis.y;
+                    } else if (options.property === 'opacity') {
+                        animation.kill();
+                    }
+                })
+            });
+        });
+        MapManager.polygonSeries.tooltip.events.on('shown',(ev) => {
+            ev.target.opacity = 1;
+            ev.target.dom.querySelector('foreignObject').setAttribute('height', '100%');
+        });
+        MapManager.polygonSeries.tooltip.events.on('hidden',(ev) => {
+            ev.target.opacity = 0;
+        });
+        MapManager.polygonSeries.events.on('hit', (ev) => {
+            const {spritePoint} = ev;
+            MapManager.polygonSeries.tooltip.x = spritePoint.x - 40;
+            MapManager.polygonSeries.tooltip.y = spritePoint.y;
+        });
+        // MapManager.polygonSeries.tooltip.dom.querySelector('img').onload = () => {
+        //
+        // }
     }
     editTemplate(data:CountryData) {
         const timeSeries = data.timeseries;
@@ -37,9 +73,7 @@ export class Tooltip {
         // const recovered_cases_difference_template = recovered_cases_difference ? `<span class="changed">${recovered_cases_math_prefix}${recovered_cases_difference} <span class="time">(since a day ago)</span></span><br>` : '';
         return `
             <div class="earth-overlay">
-                <div class="flag">
-                    <img src="{flag}">
-                </div>
+                <img src="{flag}">
                 <div class="title">
                     <span>
                         <em>{name}</em>
