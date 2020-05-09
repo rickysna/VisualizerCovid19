@@ -63,7 +63,7 @@ export class CountryPolygon {
     }
     setOverlay() {
         this.polygonSeries.events.on('inited', () => {
-            new Tooltip(this.polygonSeries.mapPolygons);
+            new Tooltip();
         });
     }
     bindEvents() {
