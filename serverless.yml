@@ -29,7 +29,7 @@ functions:
     handler: backend/api.handler
     events:
       - http:
-          path: 'api'
+          path: api
           method: get
           cors: true
 
