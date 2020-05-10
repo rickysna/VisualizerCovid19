@@ -70,7 +70,20 @@ module.exports = {
                 use: {
                     loader: 'html-loader',
                     options: {
-                        attributes: true
+                        attributes: {
+                            list: [
+                                {
+                                    tag: 'img',
+                                    attribute: 'src',
+                                    type: 'src'
+                                },
+                                {
+                                    tag: 'link',
+                                    attribute: 'href',
+                                    type: 'src'
+                                }
+                            ]
+                        }
                     }
                 }
             }
