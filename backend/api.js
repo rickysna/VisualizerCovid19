@@ -12,7 +12,7 @@ module.exports.handler = async event => {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Credentials": true
         },
-        body: JSON.stringify(result.countries)
+        body: JSON.stringify(result)
     };
 
     // Use this code if you don't use the http event with the LAMBDA-PROXY integration

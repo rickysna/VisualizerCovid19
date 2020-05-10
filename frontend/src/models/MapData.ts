@@ -20,4 +20,17 @@ export interface CountryData {
     [key:string]: any
 }
 
+export interface Worldwide {
+    deaths: number
+    recovered: number
+    reports: number
+}
+
 export type CountriesData = {[key: string]: CountryData};
+
+export interface API {
+    worldwide: Worldwide,
+    countries: CountriesData,
+    timestamp: string,
+    max: string
+}
