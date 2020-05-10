@@ -16,7 +16,7 @@ am4core.useTheme(am4themes_animated);
 export class Map {
     chart:any;
     animatable = false;
-    scale:number = 0.6;
+    scale:number = 0.7;
     constructor(data: CountriesData, dataField: string) {
         this.initial();
         this.limitVerticalRotate();
@@ -27,7 +27,7 @@ export class Map {
                 new Legend(dataField);
             }
         }
-        this.scaleMap();
+        this.scaleMap(this.scale);
     }
     initial() {
         this.chart = MapManager.createChart("chartdiv");
@@ -40,6 +40,14 @@ export class Map {
         this.chart.deltaLatitude = 0;
         // 移动方式
         this.chart.panBehavior = "rotateLongLat";
+
+        window.onresize = () => {
+            if (window.innerWidth > 1000) {
+                this.scaleMap(this.scale = 0.7);
+            } else {
+                this.scaleMap(this.scale = 0.6);
+            }
+        }
     }
     setChartPolygonColor() {
         this.chart.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color("#000");
@@ -82,29 +90,39 @@ export class Map {
             earthAnimateObj && earthAnimateObj.kill();
         });
     }
-    scaleMap() {
-        this.chart.seriesContainer.events.on('ready', (ev:any) => {
+    scaleMap(scale: number) {
+        const promise = new Promise((resolve) => {
+            if (this.chart.seriesContainer.isReady()) {
+                resolve();
+            } else {
+                this.chart.seriesContainer.events.on('ready', (ev: any) => {
+                    resolve();
+                });
+            }
+        });
+
+        promise.then(() => {
             this.chart.events.disable();
             this.chart.seriesContainer.events.disable();
             const seriesElement = this.chart.seriesContainer.element;
-            seriesElement.scale = this.scale;
-            this.centralContainer();
-            seriesElement.transform = this.centralContainer.bind(this, true);
+            seriesElement.scale = scale;
+            this.centralContainer(scale);
+            seriesElement.transform = this.centralContainer.bind(this, scale, true);
             AppManager.events.triggerEvent('MapReady');
         });
     }
-    centralContainer(setAttribute?:boolean) {
+    centralContainer(scale: number, setAttribute?:boolean) {
         const fullWidth = window.innerWidth;
         const fullHeight = window.innerHeight;
         const polygonBox = MapManager.polygonSeries.dom.getBBox();
         const seriesElement = this.chart.seriesContainer.element;
-        const x = Math.ceil((fullWidth / 2) - (polygonBox.x * this.scale) - (polygonBox.width * this.scale / 2));
-        const y = Math.ceil((fullHeight / 2) - (polygonBox.height * this.scale / 2));
+        const x = Math.ceil((fullWidth / 2) - (polygonBox.x * scale) - (polygonBox.width * scale / 2));
+        const y = Math.ceil((fullHeight / 2) - (polygonBox.height * scale / 2));
         seriesElement.x = x;
         seriesElement.y = y;
 
         if (setAttribute) {
-            seriesElement.node.setAttribute('transform', `translate(${x}, ${y}) scale(${this.scale})`);
+            seriesElement.node.setAttribute('transform', `translate(${x}, ${y}) scale(${scale})`);
         }
     }
 }

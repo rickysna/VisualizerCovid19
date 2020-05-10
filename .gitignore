@@ -4,6 +4,7 @@ jspm_packages
 
 # Serverless directories
 .serverless
+.idea
 
 frontend/node_modules/**
 Frontend/dist/**
