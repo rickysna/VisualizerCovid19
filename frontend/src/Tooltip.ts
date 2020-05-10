@@ -5,14 +5,11 @@ import {MapManager} from "./MapManager";
 import {Map} from "./Map";
 
 export class Tooltip {
+    axis:{x: number, y: number} = {x: 0, y: 0};
     constructor() {
         MapManager.polygonSeries.mapPolygons.each((mapPolygon, index) => {
             const dataContext:any = mapPolygon.dataItem.dataContext;
             if (dataContext !== undefined) {
-                    // mapPolygon.tooltip.events.onAll(ev => {
-                    //     console.log(ev);
-                    // });
-
                 mapPolygon.tooltip.background.disabled = true;
                 mapPolygon.tooltipPosition = 'fixed';
                 mapPolygon.showTooltipOn = 'hit';
@@ -22,19 +19,24 @@ export class Tooltip {
         });
         this.centralTooltipPosition();
     }
-    centralTooltipPosition() {
-        let axis = {x: 0, y: 0};
+    initialPosition() {
         const boxSize = MapManager.polygonSeries.dom.getBBox();
-        axis.x = boxSize.x + boxSize.width / 2;
-        axis.y = boxSize.y + boxSize.height / 2 - 20;
+        this.axis.x = boxSize.x + boxSize.width / 2;
+        this.axis.y = boxSize.y + boxSize.height / 2 - 20;
+    }
+    centralTooltipPosition() {
+        this.initialPosition();
+        window.addEventListener("resize", () => {
+            setTimeout(() => this.initialPosition(), 200);
+        }, true);
         MapManager.polygonSeries.tooltip.events.onAll((name, ev) => {
             ev.target.animations.forEach((animation) => {
                 animation.duration = 1500;
                 animation.animationOptions.forEach(options => {
                     if (options.property === 'x') {
-                        options.to = axis.x;
+                        options.to = this.axis.x;
                     } else if (options.property === 'y') {
-                        options.to = axis.y;
+                        options.to = this.axis.y;
                     } else if (options.property === 'opacity') {
                         animation.kill();
                     }
