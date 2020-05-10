@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <h1>COVID-19</h1>
+        <p style="opacity: 0.7;">Click on a country or territory to see cases, deaths, and recoveries.</p>
+    </div>
+    <div id="particles-js"></div>
+    <div id="chartdiv"></div>
+</div>
+<div id="loading" class="loading-container">
+    <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
+<div class="about">
+    <div class="bottom-bar" id="bottomBar">
+        <div class="bar">MORE INFORMATION</div>
+    </div>
+</div>
+<div class="popup-container" id="popup">
+    <div class="popup-wrapper" data-mark="wrapper">
+        <div class="popup-header">
+            <h2>More Information</h2>
+            <div class="popup-close" data-mark="close">
+                <img src="./close.svg" alt="close">
+            </div>
+        </div>
+        <div class="popup-content">
+            <p>This website is made by <a href="https://www.linkedin.com/in/ricky-jiang-040860192/">Ricky Jiang(Linkedin
+                Profile)</a>.</p><br>
+            <p>I referred the UI from <a href="https://www.covidvisualizer.com">covidvisualizer</a>. The goal of this
+                project is practicing a complex chart UI with Serverless technology</p><br>
+            <p>tags:</p>
+            <p style="font-size: 12px; color: #5d5d5d;">AWS CloudFront, AMCHATS, Node.js, Webpack, TypeScript</p>
+        </div>
+    </div>
+</div>
+<div id="footer" style="display: block;">
+    <p>
+        <span class="tiny">TOTAL COUNTS (as of <span class="timestamp" id="timestamp">a minute ago</span>)</span>
+        <br>
+        ACTIVE:&nbsp;<span id="total-cases">2,380,275</span><span id="total-count" class="tiny">/4,100,625</span><span class="muted disappear">&nbsp;•</span>
+        &nbsp;DEATHS:&nbsp;
+        <span id="total-deaths">280,431</span><span id="mortality-rate" class="tiny">(6.84%)</span>
+        <span class="tooltip">
+            <img src="./info.svg">
+            <span class="tooltiptext">Deaths out of<br><em>total</em> cases</span>
+        </span>
+        <span class="muted disappear">•</span><br>
+        &nbsp;RECOVERIES:&nbsp;
+        <span id="total-recovered">1,439,919</span>
+        <span id="recovery-rate" class="tiny">(35.11%)</span>
+        <span class="tooltip">
+            <img src="./info.svg">
+            <span class="tooltiptext">Recoveries out of<br><em>total</em> cases</span>
+        </span>
+    </p>
+</div>
+</body>
+</html>

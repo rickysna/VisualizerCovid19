@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -27,6 +28,10 @@ module.exports = {
     plugins: [
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1, // disable creating additional chunks
+        }),
+        new HtmlWebpackPlugin({  // Also generate a test.html
+            filename: 'index.html',
+            template: 'src/assets/index.html'
         })
     ],
     module: {
@@ -36,6 +41,39 @@ module.exports = {
                 use: 'ts-loader',
                 exclude: /(node_modules|bower_components)/,
             },
+            {
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'images/'
+                        }
+                    },
+                ],
+            },
+            {
+                test: /\.css$/i,
+                use: [
+                    {
+                        loader: 'file-loader',
+                        options: {
+                            name: '[name].[ext]',
+                            outputPath: 'styles/'
+                        }
+                    },
+                ],
+            },
+            {
+                test: /\.(html)$/,
+                use: {
+                    loader: 'html-loader',
+                    options: {
+                        attributes: true
+                    }
+                }
+            }
         ]
     },
     resolve: {
