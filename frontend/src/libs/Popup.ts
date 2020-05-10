@@ -5,7 +5,7 @@ export class Popup {
     constructor(elementId: string) {
         this.container = document.getElementById(elementId);
         this.closeButton = this.container.querySelector('[data-mark="close"]');
-        this.wrapper = this.container.querySelector('.popup-wrapper')
+        this.wrapper = this.container.querySelector('[data-mark="wrapper"]');
         this.bindEvents();
     }
     show() {
@@ -17,7 +17,9 @@ export class Popup {
         setTimeout(() => this.container.style.display = "none", 200);
     }
     private bindEvents() {
-        this.closeButton.addEventListener('click', () => this.hide(), false);
+        if (this.closeButton) {
+            this.closeButton.addEventListener('click', () => this.hide(), false);
+        }
         this.container.addEventListener('mousedown', (ev) => {
             if (ev.target === this.container) this.hide();
         }, false);
