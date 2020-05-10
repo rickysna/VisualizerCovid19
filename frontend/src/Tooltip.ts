@@ -1,8 +1,7 @@
-import {MapPolygon, MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {CountryData, TimeSeries} from "./models/MapData";
-import {ListTemplate} from "@amcharts/amcharts4/.internal/core/utils/List";
 import {MapManager} from "./MapManager";
-import {Map} from "./Map";
+import * as tools from "./libs/tools";
+import {DateDiffer} from "./models/Date";
 
 export class Tooltip {
     axis:{x: number, y: number} = {x: 0, y: 0};
@@ -58,7 +57,7 @@ export class Tooltip {
     }
     editTemplate(data:CountryData) {
         const timeSeries = data.timeseries;
-        const passed_time = timeSeries ? this.formatDateToString(this.getTimeDifference(timeSeries)) : '';
+        const passed_time = timeSeries ? tools.convertDateToString(this.getTimeDifference(timeSeries)) : '';
         const report_cases_difference = timeSeries ? this.getNumberDifference(timeSeries, 'confirmed') : 0;
         const report_cases_math_prefix = report_cases_difference < 0 ? '-' : '+';
         const report_cases_difference_template = report_cases_difference ? `<span class="changed">${report_cases_math_prefix}${report_cases_difference} <span class="time">(since ${passed_time})</span></span><br>` : '';
@@ -108,7 +107,6 @@ export class Tooltip {
     }
     private getNumberDifference(timeSeries: TimeSeries, dataFields: keyof TimeSeries) {
         let resultNumber:number = 0;
-        let resultTime:string = '';
 
         let scopeData = timeSeries[dataFields];
         let lastRecordNumber:any[] = scopeData.slice(-2);
@@ -118,41 +116,6 @@ export class Tooltip {
     }
     private getTimeDifference(timeSeries: TimeSeries) {
         const previous = new Date(timeSeries['dates'].slice(-1)[0]);
-        return this.dateDiffer(previous);
-    }
-    dateDiffer(previous: Date) {
-        let current = new Date();
-
-        // @ts-ignore
-        const seconds = (current - previous) / 1000;
-        const days = Math.floor(seconds / 60 / 60 / 24);
-        const hours = Math.floor(seconds / 60 / 60);
-
-        return {days, hours}
-    }
-    formatDateToString(data: {days: number, hours: number}) {
-        if (data.days !== 0) {
-            switch (data.days) {
-                case 1:
-                    return 'a day ago';
-                case 2:
-                    return 'two days ago';
-                case 3:
-                    return 'three days ago';
-                default:
-                    return 'few days ago'
-            }
-        } else {
-            switch (data.hours) {
-                case 0:
-                    return 'just now';
-                case 1:
-                    return 'a hour ago';
-                case 2:
-                    return 'two hours ago';
-                default:
-                    return 'few hours ago';
-            }
-        }
+        return tools.dateDiffer(previous);
     }
 }
