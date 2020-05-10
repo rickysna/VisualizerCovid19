@@ -21,10 +21,13 @@ export function dateDiffer(previous: Date):DateDiffer {
 
 export function convertDateToString(date: DateDiffer) {
     if (date.days > 0) {
-        return date.days + ' days ago';
+        const unit = date.days > 1 ? 'days' : 'day';
+        return `${date.days} ${unit} ago`;
     } else if (date.hours > 0) {
-        return date.hours + ' hours ago';
+        const unit = date.hours > 1 ? 'hours' : 'hour';
+        return `${date.hours} ${unit} ago`;
     } else if (date.seconds > 0) {
-        return 'just ' + date.seconds + ' seconds ago';
+        const unit = date.seconds > 1 ? 'seconds' : 'second';
+        return `just ${date.seconds} ${unit} ago`;
     }
 }
