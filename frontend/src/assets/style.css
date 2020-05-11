@@ -4,7 +4,7 @@ html, body {
     width: 100%;
     height: 100%;
     font-family: Rubik, sans-serif;
-
+    min-width: 600px;
 }
 
 p {
@@ -293,4 +293,79 @@ p {
 .muted {
     color: rgba(255,255,255,.4);
     font-size: .9em;
+}
+
+.ranking__container {
+    width: 400px;
+    padding: 20px;
+    background-color: #222;
+    box-sizing: border-box;
+    border-radius: 8px;
+    overflow-y: auto;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-450px, -50%);
+}
+
+.ranking__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+h2.ranking__title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.25;
+    color: #daa520;
+    box-sizing: border-box;
+}
+
+.ranking__content {
+    margin-top: 2rem;
+    line-height: 1.5;
+    color: #c8c7c7;
+}
+
+.ranking__list {
+    overflow-y: scroll;
+    max-height: 58vh;
+}
+
+.ranking__list .country {
+    border-bottom: 1px solid #daa520;
+    background-color: #111;
+    padding: 15px;
+    height: 50px;
+}
+
+.ranking__list .country-flag {
+    float: left;
+    display: block;
+    width: 40px;
+    height: 40px;
+    background: #e6e7ed;
+    -moz-border-radius: 20px;
+    -webkit-border-radius: 20px;
+    background-position: 50% 50%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-right: 10px;
+}
+
+.ranking__list .country-info {
+    float: right;
+    width: calc(100% - 50px);
+    overflow-x: scroll;
+}
+
+.ranking__list .country-name {
+    white-space: nowrap;
+}
+
+.ranking__list .country-cases {
+    color: #d12121;
 }
