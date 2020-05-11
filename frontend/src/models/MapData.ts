@@ -26,11 +26,14 @@ export interface Worldwide {
     reports: number
 }
 
+export type CountriesSortedByActive = string[];
+
 export type CountriesData = {[key: string]: CountryData};
 
 export interface API {
     worldwide: Worldwide,
     countries: CountriesData,
+    countriesSortedByActive: CountriesSortedByActive,
     timestamp: string,
     max: string
 }

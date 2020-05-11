@@ -116,7 +116,7 @@ export class Map {
         const fullHeight = window.innerHeight;
         const polygonBox = MapManager.polygonSeries.dom.getBBox();
         const seriesElement = this.chart.seriesContainer.element;
-        const x = Math.ceil((fullWidth / 2) - (polygonBox.x * scale) - (polygonBox.width * scale / 2));
+        const x = Math.ceil((fullWidth / 2) - (polygonBox.x * scale) + (polygonBox.width * scale / 20));
         const y = Math.ceil((fullHeight / 2) - (polygonBox.height * scale / 2));
         seriesElement.x = x;
         seriesElement.y = y;

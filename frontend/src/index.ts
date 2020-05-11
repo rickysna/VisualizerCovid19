@@ -1,23 +1,27 @@
-import {Map} from "./Map";
 import particles from "./particles";
-import {getCountriesData} from "./data";
 import {AppManager} from "./AppManager";
 import {Popup} from "./libs/Popup";
-import * as tools from "./libs/tools";
+import {CountryData} from "./models/MapData";
+import {Map} from "./Map";
 
-getCountriesData().then(api => {
+AppManager.API.getCountriesData().then(api => {
     particles("particles-js");
     const map = new Map(api.countries, 'reports');
-    // AppManager.events.triggerEvent('MapReady');
+    AppManager.events.triggerEvent('MapReady');
 
-    const {deaths, reports, recovered} = api.worldwide;
-    document.getElementById('total-cases').innerHTML = tools.formatNumber(reports - recovered - deaths);
-    document.getElementById('total-count').innerHTML = tools.formatNumber(reports);
-    document.getElementById('total-deaths').innerHTML = tools.formatNumber(deaths);
-    document.getElementById('total-recovered').innerHTML = tools.formatNumber(recovered);
-    document.getElementById('mortality-rate').innerHTML = '(' + Math.ceil((deaths / reports) * 10000) / 100 + ')%';
-    document.getElementById('recovery-rate').innerHTML = '(' + Math.ceil((recovered / reports) * 10000) / 100 + ')%';
-    document.getElementById('timestamp').innerHTML = tools.convertDateToString(tools.dateDiffer(new Date(api.timestamp)));
+    const dataSortByActive:CountryData[] = Object.values(api.countries).sort((va, vb) => {
+        const vaIndex = Object.values(api.countries).indexOf(va);
+        const vbIndex = Object.values(api.countries).indexOf(vb);
+        const vaName = Object.keys(api.countries)[vaIndex];
+        const vbName = Object.keys(api.countries)[vbIndex];
+        const vaNameIndex = api.countriesSortedByActive.indexOf(vaName);
+        const vbNameIndex = api.countriesSortedByActive.indexOf(vbName);
+
+        return vaNameIndex < vbNameIndex ? -1 : 1;
+    });
+
+    const ranking = new AppManager.components.Ranking('ranking', dataSortByActive, api.timestamp);
+    const footer = new AppManager.components.Footer('footer', api.worldwide, api.timestamp);
 });
 
 AppManager.events.addEventListener('MapReady', () => {
@@ -29,3 +33,4 @@ AppManager.events.addEventListener('MapReady', () => {
     document.getElementById('bottomBar')
         .addEventListener('click', () => popup.show(), false);
 });
+
