@@ -68,7 +68,7 @@ p {
 .earth-overlay img {
     width: 100%;
     display: block;
-    /*position: absolute;*/
+    opacity: 0.7;
     /*left: 0;*/
     /*top: 0;*/
 }
@@ -76,11 +76,12 @@ p {
 .earth-overlay .title {
     padding: 5px;
     white-space: initial;
-    background-color: #000;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .earth-overlay .info {
     padding: 5px;
+    background-color: rgba(204, 0, 0, 0.7);
 }
 
 .earth-overlay .changed {

@@ -20,7 +20,7 @@ export class Tooltip {
     }
     initialPosition() {
         const boxSize = MapManager.polygonSeries.dom.getBBox();
-        this.axis.x = boxSize.x + boxSize.width / 2;
+        this.axis.x = boxSize.x + boxSize.width / 2 + 300;
         this.axis.y = boxSize.y + boxSize.height / 2 - 20;
     }
     centralTooltipPosition() {
@@ -95,7 +95,7 @@ export class Tooltip {
                         </span>
                     </span>
                 </div>
-                <div class="info" style="background-color: #cc0000">
+                <div class="info">
                     <span><span class="_active">{reports}</span> active</span><br>
                     ${report_cases_difference_template}
                     <span><span class="_dead">{deaths}</span> deceased</span><br>
