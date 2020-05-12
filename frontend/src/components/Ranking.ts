@@ -7,7 +7,7 @@ export class Ranking {
     constructor(elementId: string, data: CountryData[], timestamp: string) {
         this.container = document.getElementById(elementId);
 
-        this.container.innerHTML = Ranking.getRankingTemplate(Ranking.renderItems(data));
+        this.container.innerHTML = Ranking.getRankingTemplate(Ranking.renderItems(data), timestamp);
         this.addEvents();
     }
     static getItemTemplate(data: CountryData) {
@@ -21,7 +21,8 @@ export class Ranking {
             </div>
         `
     }
-    static getRankingTemplate(items: string) {
+    static getRankingTemplate(items: string, timestamp: string) {
+        const timeStr = tools.convertDateToString(tools.dateDiffer(new Date(timestamp)));
         return `
             <div class="ranking__container">
                 <div class="ranking__header">
@@ -31,7 +32,7 @@ export class Ranking {
                 </div>
                 <div class="ranking__content">
                     <p class="muted">
-                        Data last updated <span class="timestamp">a minute ago</span> by
+                        Data last updated <span class="timestamp">${timeStr}</span> by
                         <a href="https://www.worldometers.info/coronavirus/" target="_blank">Worldometers</a>.
                     </p>
                     <div class="ranking__list">${items}</div>
