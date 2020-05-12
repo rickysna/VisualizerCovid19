@@ -375,3 +375,7 @@ h2.ranking__title {
 .ranking__list .country:hover {
     background-color: #2f2f2f;
 }
+
+.ranking__container a {
+    color: #fff;
+}

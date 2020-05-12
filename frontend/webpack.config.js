@@ -1,14 +1,11 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
     entry: {
-        main: path.resolve(__dirname, './src/index.ts'),
-        amcharts: [
-            '@amcharts/amcharts4/core',
-            '@amcharts/amcharts4/maps'
-        ]
+        main: path.resolve(__dirname, './src/index.ts')
     },
     devtool: 'inline-source-map',
     devServer: {
@@ -20,9 +17,7 @@ module.exports = {
         filename: '[name].bundle.js',
     },
     optimization: {
-        splitChunks: {
-            chunks: 'all',
-        },
+        splitChunks: { chunks: 'all' },
     },
     mode: "development",
     plugins: [
@@ -32,7 +27,8 @@ module.exports = {
         new HtmlWebpackPlugin({  // Also generate a test.html
             filename: 'index.html',
             template: 'src/assets/index.html'
-        })
+        }),
+        new UglifyJsPlugin()
     ],
     module: {
         rules: [

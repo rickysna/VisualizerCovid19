@@ -1,6 +1,7 @@
 import {CountryData} from "../models/MapData";
 import * as tools from "../libs/tools";
 import {MapManager} from "../MapManager";
+import {AppManager} from "../AppManager";
 
 export class Ranking {
     container: HTMLElement;
@@ -13,7 +14,7 @@ export class Ranking {
     static getItemTemplate(data: CountryData) {
         return `
             <div class="country" data-name="${data.altNames[0]}">
-                <div class="country-flag" style="background-image: url(${data.flag})"></div>
+                <div class="country-flag" data-style="background-image: url(${data.flag})"></div>
                 <div class="country-info">
                     <span class="country-name">${data.name}</span><br>
                     <span class="country-cases">${tools.formatNumber(data.cases)} <span class="muted">total cases</span></span>
@@ -31,10 +32,10 @@ export class Ranking {
                     </h2>
                 </div>
                 <div class="ranking__content">
-                    <p class="muted">
-                        Data last updated <span class="timestamp">${timeStr}</span> by
-                        <a href="https://www.worldometers.info/coronavirus/" target="_blank">Worldometers</a>.
-                    </p>
+<!--                    <p class="muted">-->
+<!--                        Data last updated <span class="timestamp">${timeStr}</span> by-->
+<!--                        <a href="https://www.worldometers.info/coronavirus/" target="_blank">Worldometers</a>.-->
+<!--                    </p>-->
                     <div class="ranking__list">${items}</div>
                 </div>
             </div>
@@ -67,6 +68,12 @@ export class Ranking {
                     }
                 });
             });
+        });
+        AppManager.events.addEventListener('MapReady', () => {
+            this.container.querySelectorAll('.country-flag').forEach((dom) => {
+                const flag = dom.getAttribute('data-style');
+                dom.setAttribute('style', flag);
+            })
         })
     }
 }

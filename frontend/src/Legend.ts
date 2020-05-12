@@ -1,5 +1,3 @@
-import * as am4maps from "@amcharts/amcharts4/maps";
-import * as am4core from "@amcharts/amcharts4/core";
 import {HeatLegend, MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {MapManager} from "./MapManager";
 
@@ -42,10 +40,10 @@ export class Legend {
             this.chart.events.on('sizechanged', ev => this.setLabelSize(minRange, maxRange));
         });
 
-        let label = this.chart.createChild(am4core.Label);
+        let label = this.chart.createChild(MapManager.libs.am4core.Label);
         label.text = "legend (active cases)";
         label.fontSize = 14;
-        label.fill = am4core.color('#b6b6b6');
+        label.fill = MapManager.libs.am4core.color('#b6b6b6');
         label.align = "center";
         label.dy = -70;
     }
@@ -54,15 +52,15 @@ export class Legend {
         this.chart.valign = "bottom";
     }
     setSize() {
-        this.chart.width = am4core.percent(25);
+        this.chart.width = MapManager.libs.am4core.percent(25);
         this.chart.minWidth = 300;
     }
     styleChart() {
         const markersTemplate = this.chart.markers.template;
         const labelsTemplate = this.chart.valueAxis.renderer.labels.template;
-        labelsTemplate.fill = am4core.color("#fff");
+        labelsTemplate.fill = MapManager.libs.am4core.color("#fff");
 
-        markersTemplate.stroke = am4core.color("#bab89b");
+        markersTemplate.stroke = MapManager.libs.am4core.color("#bab89b");
         markersTemplate.cornerRadius(4, 4, 4, 4);
         markersTemplate.marginRight = 40;
     }

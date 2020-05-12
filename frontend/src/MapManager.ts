@@ -2,29 +2,46 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import * as am4core from "@amcharts/amcharts4/core";
 import {HeatLegend, MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {CountriesData} from "./models/MapData";
+import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+const newWindowObject = window as any;
+const am3core:typeof am4core = newWindowObject.am4core;
+const am3maps:typeof am4maps = newWindowObject.am4maps;
+const am3themes_animated:typeof am4themes_animated = newWindowObject.am4themes_animated;
+const am3geodata_worldLow:typeof am4geodata_worldLow = newWindowObject.am4geodata_worldLow;
 
 export class MapManager {
+    static libs = {
+        am4maps: am3maps,
+        am4core: am3core,
+        themes: {
+            am4themes_animated: am3themes_animated
+        },
+        geodata: {
+            am4geodata_worldLow: am3geodata_worldLow
+        }
+    };
     static data:any[];
     static chart:any;
     static polygonSeries:MapPolygonSeries;
     static heatLegend: HeatLegend;
     static dataField:string;
     static createChart(htmlElement: string) {
-        return this.chart = am4core.create(htmlElement, am4maps.MapChart);
+        return this.chart = MapManager.libs.am4core.create(htmlElement, MapManager.libs.am4maps.MapChart);
     }
     static createPolygonSeries(renderData: CountriesData, dataFields: string) {
         // debugger;
-        this.polygonSeries = this.chart.series.push(new am4maps.MapPolygonSeries());
+        this.polygonSeries = this.chart.series.push(new MapManager.libs.am4maps.MapPolygonSeries());
         this.insertData(renderData, dataFields);
         return this.polygonSeries;
     }
     static createHeatLegend() {
-        this.heatLegend = this.chart.createChild(am4maps.HeatLegend);
+        this.heatLegend = this.chart.createChild(MapManager.libs.am4maps.HeatLegend);
         this.heatLegend.series = this.polygonSeries;
         return this.heatLegend;
     }
     static insertData(renderData: CountriesData, dataFields: string) {
-        this.polygonSeries.events.on("beforedatavalidated", () => {
+        this.polygonSeries.events.once("beforedatavalidated", () => {
             this.polygonSeries.data = this.polygonSeries.data.map((data) => {
                 const apiData = renderData[data.id] || {};
                 return Object.assign(apiData, data);
@@ -51,3 +68,5 @@ export class MapManager {
         });
     }
 }
+
+MapManager.libs.am4core.useTheme(MapManager.libs.themes.am4themes_animated);

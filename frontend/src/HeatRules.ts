@@ -1,6 +1,5 @@
 import {MapPolygon, MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {iRGB} from "@amcharts/amcharts4/.internal/core/utils/Colors";
-import * as am4core from "@amcharts/amcharts4/core";
 import {MapManager} from "./MapManager";
 
 type ruleProperty = {
@@ -42,7 +41,7 @@ export class HeatRules {
                 MapManager.polygonSeries.mapPolygons.each((mapPolygon) => {
                     const cIndex = this.findCountryIndex(data, mapPolygon.dataItem.dataContext);
                     if (cIndex === -1)
-                        return mapPolygon.fill = am4core.color('#242424');
+                        return mapPolygon.fill = MapManager.libs.am4core.color('#242424');
 
                     const rule = this.findRuleByCountryIndex(rules, cIndex);
                     this.processMapPolygon(mapPolygon, rule, cIndex);
@@ -54,7 +53,7 @@ export class HeatRules {
         const alphaPercent = ((index - rule.indexBoundary.min) / (rule.indexBoundary.max - rule.indexBoundary.min) / 2).toFixed(2);
         const color = Object.assign({a: Number(alphaPercent) + 0.5}, rule.levelBasicColor);
 
-        mapPolygon.fill = am4core.color(color);
+        mapPolygon.fill = MapManager.libs.am4core.color(color);
     }
     private findCountryIndex(data: any[], dataContext: any) {
         return data.indexOf(dataContext);
@@ -94,8 +93,8 @@ export class HeatRules {
         MapManager.polygonSeries.heatRules.push({
             "property": "fill",
             "target": MapManager.polygonSeries.mapPolygons.template,
-            "min": am4core.color(first.levelBasicColor),
-            "max": am4core.color(last.levelBasicColor),
+            "min": MapManager.libs.am4core.color(first.levelBasicColor),
+            "max": MapManager.libs.am4core.color(last.levelBasicColor),
         });
     }
 }

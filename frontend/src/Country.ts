@@ -1,5 +1,3 @@
-import * as am4maps from "@amcharts/amcharts4/maps";
-import * as am4core from "@amcharts/amcharts4/core";
 import {MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {HeatRules} from "./HeatRules";
 import {Tooltip} from "./Tooltip";
@@ -20,7 +18,7 @@ export class CountryPolygon {
     setCountriesStroke() {
         let template = this.polygonSeries.mapPolygons.template;
         template.nonScalingStroke = true;
-        template.stroke = am4core.color("#450000"); //区块边框颜色
+        template.stroke = MapManager.libs.am4core.color("#450000"); //区块边框颜色
         template.strokeWidth = 0.1;
     }
     setHeatRules() {
@@ -76,7 +74,7 @@ export class CountryPolygon {
             }, {
                 to: -visualLatitude,
                 property: 'deltaLatitude'
-            }], 1000, am4core.ease.linear);
+            }], 1000, MapManager.libs.am4core.ease.linear);
             MapManager.chart.goHome();
         });
         // this.countries.polygonSeries.mapPolygons.template.events.on('hit', ({target}) => {
