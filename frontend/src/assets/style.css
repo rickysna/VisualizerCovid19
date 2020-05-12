@@ -18,15 +18,15 @@ p {
     line: .5;
 }
 
-#total-cases {
+.total-cases {
     color: #daa520;
 }
 
-#total-deaths {
+.total-deaths {
     color: #ff4848;
 }
 
-#total-recovered {
+.total-recovered {
     color: #1ae021;
 }
 

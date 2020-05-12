@@ -20,16 +20,16 @@ export class Footer {
             <p>
                 <span class="tiny">TOTAL COUNTS (as of <span class="timestamp">${timestamp}</span>)</span>
                 <br>
-                ACTIVE:&nbsp;<span>${totalCases}</span><span id="total-count" class="tiny">/${totalCount}</span><span class="muted disappear">&nbsp;•</span>
+                ACTIVE:&nbsp;<span class="total-cases">${totalCases}</span><span class="tiny total-count">/${totalCount}</span><span class="muted disappear">&nbsp;•</span>
                 &nbsDEATHS:&nbsp;
-                <span>${totalDeaths}</span><span class="tiny">${mortalityRate}</span>
+                <span class="total-deaths">${totalDeaths}</span><span class="tiny mortality-rate">${mortalityRate}</span>
                 <span class="tooltip">
                     <img src="${infoSVG.default}">
                     <span class="tooltiptext">Deaths out of<br><em>total</em> cases</span>
                 </span>
                 <span class="muted disappear">•</span><br>
                 &nbsp;RECOVERIES:&nbsp;
-                <span>${totalRecovered}</span>
+                <span class="total-recovered">${totalRecovered}</span>
                 <span class="tiny">${recoveryRate}</span>
                 <span class="tooltip">
                     <img src="${infoSVG.default}">
