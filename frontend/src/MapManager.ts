@@ -10,15 +10,17 @@ const am3maps:typeof am4maps = newWindowObject.am4maps;
 const am3themes_animated:typeof am4themes_animated = newWindowObject.am4themes_animated;
 const am3geodata_worldLow:typeof am4geodata_worldLow = newWindowObject.am4geodata_worldLow;
 
+const __useLocalModule__ = process.env.development;
+
 export class MapManager {
     static libs = {
-        am4maps: am3maps,
-        am4core: am3core,
+        am4maps: __useLocalModule__ ? am4maps : am3maps,
+        am4core: __useLocalModule__ ? am4core: am3core,
         themes: {
-            am4themes_animated: am3themes_animated
+            am4themes_animated: __useLocalModule__ ? am4themes_animated : am3themes_animated
         },
         geodata: {
-            am4geodata_worldLow: am3geodata_worldLow
+            am4geodata_worldLow: __useLocalModule__ ? am4geodata_worldLow : am3geodata_worldLow
         }
     };
     static data:any[];
