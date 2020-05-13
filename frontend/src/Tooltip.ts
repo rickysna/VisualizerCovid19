@@ -1,7 +1,6 @@
 import {CountryData, TimeSeries} from "./models/MapData";
 import {MapManager} from "./MapManager";
 import * as tools from "./libs/tools";
-import {DateDiffer} from "./models/Date";
 
 export class Tooltip {
     axis:{x: number, y: number} = {x: 0, y: 0};
@@ -17,6 +16,7 @@ export class Tooltip {
             }
         });
         this.centralTooltipPosition();
+        console.log(MapManager.polygonSeries.tooltip.dom);
     }
     initialPosition() {
         const boxSize = MapManager.polygonSeries.dom.getBBox();
@@ -30,21 +30,13 @@ export class Tooltip {
         }, true);
         MapManager.polygonSeries.tooltip.events.onAll((name, ev) => {
             ev.target.animations.forEach((animation) => {
-                animation.duration = 1500;
-                animation.animationOptions.forEach(options => {
-                    if (options.property === 'x') {
-                        options.to = this.axis.x;
-                    } else if (options.property === 'y') {
-                        options.to = this.axis.y;
-                    } else if (options.property === 'opacity') {
-                        animation.kill();
-                    }
-                })
+                animation.kill();
             });
+            ev.target.dom.setAttribute('transform', `translate(${this.axis.x},${this.axis.y})`);
         });
         MapManager.polygonSeries.tooltip.events.on('shown',(ev) => {
-            ev.target.opacity = 1;
             ev.target.dom.querySelector('foreignObject').setAttribute('height', '100%');
+            ev.target.opacity = 1;
         });
         MapManager.polygonSeries.tooltip.events.on('hidden',(ev) => {
             ev.target.opacity = 0;
