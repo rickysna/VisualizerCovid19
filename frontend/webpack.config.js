@@ -2,8 +2,31 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = (env) => {
+    const develop_mode = env.NODE_ENV === 'development';
+    let plugins = [
+        new webpack.DefinePlugin({
+            'process.env.development':JSON.stringify(env.NODE_ENV === 'development'),
+        }),
+        new webpack.optimize.LimitChunkCountPlugin({
+            maxChunks: 1, // disable creating additional chunks
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'index.html',
+            template: 'src/assets/index.html'
+        }),
+    ];
+
+    if (!develop_mode) {
+        plugins = plugins.concat([
+            new BundleAnalyzerPlugin(),
+            new webpack.IgnorePlugin(/@amcharts/),
+            new UglifyJsPlugin()
+        ]);
+    }
+
     return {
         entry: {
             main: path.resolve(__dirname, './src/index.ts')
@@ -18,24 +41,24 @@ module.exports = (env) => {
             filename: '[name].bundle.js',
         },
         optimization: {
-            splitChunks: {chunks: 'all'},
+            splitChunks: {
+                cacheGroups: {
+                    vendor: {
+                        test: /[\\/]node_modules[\\/](!@amcharts)[\\/]/,
+                        name: 'vendor',
+                        chunks: 'all',
+                    }
+                }
+            }
         },
         // mode: "development",
-        plugins: [
-            new webpack.DefinePlugin({
-                'process.env.development':JSON.stringify(env.NODE_ENV === 'development'),
-            }),
-            new webpack.optimize.LimitChunkCountPlugin({
-                maxChunks: 1, // disable creating additional chunks
-            }),
-            new HtmlWebpackPlugin({
-                filename: 'index.html',
-                template: 'src/assets/index.html'
-            })
-            // new UglifyJsPlugin()
-        ],
+        plugins,
         module: {
             rules: [
+                {
+                    test: /@am4charts/,
+                    use: env.NODE_ENV === 'development' ? 'null-loader' : 'noop-loader'
+                },
                 {
                     test: /\.tsx?$/,
                     use: 'ts-loader',

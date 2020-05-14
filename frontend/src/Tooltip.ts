@@ -16,7 +16,6 @@ export class Tooltip {
             }
         });
         this.centralTooltipPosition();
-        console.log(MapManager.polygonSeries.tooltip.dom);
     }
     initialPosition() {
         const boxSize = MapManager.polygonSeries.dom.getBBox();
