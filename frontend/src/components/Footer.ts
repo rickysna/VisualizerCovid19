@@ -21,7 +21,7 @@ export class Footer {
                 <span class="tiny">TOTAL COUNTS (as of <span class="timestamp">${timestamp}</span>)</span>
                 <br>
                 ACTIVE:&nbsp;<span class="total-cases">${totalCases}</span><span class="tiny total-count">/${totalCount}</span><span class="muted disappear">&nbsp;•</span>
-                &nbsDEATHS:&nbsp;
+                DEATHS:&nbsp;
                 <span class="total-deaths">${totalDeaths}</span><span class="tiny mortality-rate">${mortalityRate}</span>
                 <span class="tooltip">
                     <img src="${infoSVG.default}">
