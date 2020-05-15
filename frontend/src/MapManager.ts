@@ -1,7 +1,7 @@
 import {HeatLegend, MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {CountriesData} from "./models/MapData";
 
-const __useLocalModule__ = process.env.development;
+const __useLocalModule__ = process.env.development === 'true';
 
 const newWindowObject = window as any;
 const am4maps:typeof import("@amcharts/amcharts4/maps") = __useLocalModule__ ? require("@amcharts/amcharts4/maps") : newWindowObject.am4maps;
@@ -10,6 +10,7 @@ const am4themes_animated = __useLocalModule__ ? require("@amcharts/amcharts4/the
 const am4geodata_worldLow = __useLocalModule__ ? require("@amcharts/amcharts4-geodata/worldLow").default : newWindowObject.am4geodata_worldLow;
 
 export class MapManager {
+    static __useLocalModule__:boolean = __useLocalModule__;
     static libs = {
         am4maps,
         am4core,

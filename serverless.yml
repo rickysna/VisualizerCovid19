@@ -39,7 +39,7 @@ plugins:
 
 custom:
   client:
-    bucketName: visualizercovid19
+    bucketName: covid19visualizer
     distributionFolder: frontend/dist
     errorDocument: index.html
 
