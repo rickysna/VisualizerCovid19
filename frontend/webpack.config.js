@@ -8,14 +8,17 @@ module.exports = (env) => {
     const develop_mode = env.NODE_ENV === 'development';
     let plugins = [
         new webpack.DefinePlugin({
-            'process.env.development':JSON.stringify(env.NODE_ENV === 'development'),
+            'process.env.development':JSON.stringify(develop_mode),
         }),
         new webpack.optimize.LimitChunkCountPlugin({
             maxChunks: 1, // disable creating additional chunks
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'src/assets/index.html'
+            template: 'src/assets/index.html',
+            templateParameters: {
+                develop_mode
+            }
         }),
     ];
 
