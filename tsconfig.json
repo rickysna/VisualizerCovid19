@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "rootDir": "src",
-    "outDir": "./dist/",
+    "rootDir": "./frontend/src",
+    "outDir": "./frontend/dist/",
     "noImplicitAny": true,
     "sourceMap": true,
     "module": "es6",
@@ -11,6 +11,6 @@
     "moduleResolution": "node"
   },
   "include": [
-    "./src"
+    "./frontend/src"
   ]
 }

@@ -15,7 +15,7 @@ module.exports = (env) => {
         }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'src/assets/index.html',
+            template: 'frontend/src/assets/index.html',
             templateParameters: {
                 develop_mode
             }
@@ -32,7 +32,7 @@ module.exports = (env) => {
 
     return {
         entry: {
-            main: path.resolve(__dirname, './src/index.ts')
+            main: path.resolve(__dirname, './frontend/src/index.ts')
         },
         devtool: 'inline-source-map',
         devServer: {
@@ -40,7 +40,7 @@ module.exports = (env) => {
             port: 4000,
         },
         output: {
-            path: path.resolve(__dirname, 'dist'),
+            path: path.resolve(__dirname, 'frontend/dist'),
             filename: '[name].bundle.js',
         },
         optimization: {

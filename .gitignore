@@ -6,5 +6,4 @@ jspm_packages
 .serverless
 .idea
 
-frontend/node_modules/**
-Frontend/dist/**
+frontend/dist/**
