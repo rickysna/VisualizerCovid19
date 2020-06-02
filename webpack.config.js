@@ -1,34 +1,10 @@
 const path = require('path');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const devController = require('./webpack/webpack.dev')();
+const releaseController = require('./webpack/webpack.release')();
 
 module.exports = (env) => {
     const develop_mode = env.NODE_ENV === 'development';
-    let plugins = [
-        new webpack.DefinePlugin({
-            'process.env.development':JSON.stringify(develop_mode),
-        }),
-        new webpack.optimize.LimitChunkCountPlugin({
-            maxChunks: 1, // disable creating additional chunks
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'index.html',
-            template: 'frontend/src/assets/index.html',
-            templateParameters: {
-                develop_mode
-            }
-        }),
-    ];
-
-    if (!develop_mode) {
-        plugins = plugins.concat([
-            new BundleAnalyzerPlugin(),
-            new webpack.IgnorePlugin(/@amcharts/),
-            new UglifyJsPlugin()
-        ]);
-    }
+    const controller = develop_mode ? devController : releaseController;
 
     return {
         entry: {
@@ -39,10 +15,7 @@ module.exports = (env) => {
             contentBase: path.resolve(__dirname, 'dist'),
             port: 4000,
         },
-        output: {
-            path: path.resolve(__dirname, 'frontend/dist'),
-            filename: '[name].bundle.js',
-        },
+        output: controller.getOutputConfig(env),
         optimization: {
             splitChunks: {
                 cacheGroups: {
@@ -55,7 +28,7 @@ module.exports = (env) => {
             }
         },
         // mode: "development",
-        plugins,
+        plugins: controller.getWebpackPlugins(env),
         module: {
             rules: [
                 {
@@ -92,26 +65,43 @@ module.exports = (env) => {
                     ],
                 },
                 {
-                    test: /\.(html)$/,
-                    use: {
-                        loader: 'html-loader',
-                        options: {
-                            attributes: {
-                                list: [
-                                    {
-                                        tag: 'img',
-                                        attribute: 'src',
-                                        type: 'src'
-                                    },
-                                    {
-                                        tag: 'link',
-                                        attribute: 'href',
-                                        type: 'src'
-                                    }
-                                ]
+                    test: /\.html$/,
+                    use: [
+                        {
+                            loader: 'ejs-loader'
+                        }, {
+                            loader: 'extract-loader'
+                        }, {
+                            loader: 'html-loader?interpolate=require',
+                            options: {
+                                attributes: {
+                                    list: [
+                                        {
+                                            tag: 'img',
+                                            attribute: 'src',
+                                            type: 'src'
+                                        },
+                                        {
+                                            tag: 'link',
+                                            attribute: 'href',
+                                            type: 'src'
+                                        },
+                                        {
+                                            tag: 'meta',
+                                            attribute: 'content',
+                                            type: 'src',
+                                            filter: (tag, attribute, attributes) => {
+                                                return (
+                                                    attributes.content &&
+                                                    attributes.property === 'og:image'
+                                                )
+                                            }
+                                        }
+                                    ]
+                                }
                             }
                         }
-                    }
+                    ]
                 }
             ]
         },
