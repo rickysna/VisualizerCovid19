@@ -1,6 +1,6 @@
-import {CountryData, TimeSeries} from "./models/MapData";
-import {MapManager} from "./MapManager";
-import * as tools from "./libs/tools";
+import {CountryData, TimeSeries} from "../../models/MapData";
+import {MapManager} from "../../MapManager";
+import * as tools from "../../libs/tools";
 
 export class Tooltip {
     axis:{x: number, y: number} = {x: 0, y: 0};
@@ -19,7 +19,7 @@ export class Tooltip {
     }
     initialPosition() {
         const boxSize = MapManager.polygonSeries.dom.getBBox();
-        this.axis.x = boxSize.x + boxSize.width / 2 + 300;
+        this.axis.x = boxSize.x + boxSize.width / 2 + 200;
         this.axis.y = boxSize.y + boxSize.height / 2 - 20;
     }
     centralTooltipPosition() {

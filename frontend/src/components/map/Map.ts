@@ -3,9 +3,9 @@ import {CountryPolygon} from "./Country";
 import {Legend} from "./Legend";
 import {FeatureCollection} from "@amcharts/amcharts4-geodata/.internal/Geodata";
 import {Animation} from "@amcharts/amcharts4/.internal/core/utils/Animation";
-import {MapManager} from "./MapManager";
-import {CountriesData} from "./models/MapData";
-import {AppManager} from "./AppManager";
+import {MapManager} from "../../MapManager";
+import {CountriesData} from "../../models/MapData";
+import {AppManager} from "../../AppManager";
 
 export class Map {
     chart:any;
@@ -110,7 +110,7 @@ export class Map {
         const fullHeight = window.innerHeight;
         const polygonBox = MapManager.polygonSeries.dom.getBBox();
         const seriesElement = this.chart.seriesContainer.element;
-        const x = Math.ceil((fullWidth / 2) - (polygonBox.x * scale) + 50);
+        const x = Math.ceil((fullWidth / 2) - (polygonBox.x * scale) - 50);
         const y = Math.ceil((fullHeight / 2) - (polygonBox.height * scale / 2));
         seriesElement.x = x;
         seriesElement.y = y;

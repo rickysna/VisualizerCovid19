@@ -1,5 +1,5 @@
 import {HeatLegend, MapPolygonSeries} from "@amcharts/amcharts4/maps";
-import {MapManager} from "./MapManager";
+import {MapManager} from "../../MapManager";
 
 export class Legend {
     chart:HeatLegend;

@@ -1,8 +1,8 @@
 import {MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {HeatRules} from "./HeatRules";
 import {Tooltip} from "./Tooltip";
-import {MapManager} from "./MapManager";
-import {CountriesData} from "./models/MapData";
+import {MapManager} from "../../MapManager";
+import {CountriesData} from "../../models/MapData";
 
 export class CountryPolygon {
     polygonSeries:MapPolygonSeries = null;
