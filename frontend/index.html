@@ -5,13 +5,14 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>COVID-19 Visualizer</title>
-    <meta property="og:description" content="An interactive COVID-19 (coronavirus) visualizer that highlights countries around the world based on the most recent cases.">
-    <meta name="keywords" content="COVID,visualizer,COVID-19,Coronavirus,map,visualization,disease,plague,covid visualizer,covidvisualizer,covid-19 visualizer,coronavirus visualizer">
-    <meta name="description" content="An interactive COVID-19 visualizer (coronavirus) that highlights countries around the world based on the most recent cases.">
-    <meta name="author" content="Ricky Jiang">
-    <link rel="icon" href="./favicon.png">
-    <link rel="stylesheet" href="./style.css">
+    <title><%= htmlWebpackPlugin.options.title %></title>
+    <link rel="icon" href="src/assets/favicon.png">
+    <link rel="stylesheet" href="src/assets/style.css">
+    <meta prefix="og: http://ogp.me/ns#" property="og:image" content="src/assets/snapshot.jpg">
+    <meta prefix="og: http://ogp.me/ns#" property="og:description" content="<%=description%>">
+    <meta prefix="og: http://ogp.me/ns#" property="og:title" content="<%=title%>">
+    <meta prefix="og: http://ogp.me/ns#" property="og:type" content="website">
+    <meta prefix="og: http://ogp.me/ns#" property="og:url" content="<%=url%>">
 </head>
 <body>
 <div id="container">
@@ -41,13 +42,13 @@
         <div class="popup-header">
             <h2>More Information</h2>
             <div class="popup-close" data-mark="close">
-                <img src="./close.svg" alt="close">
+                <img src="src/assets/close.svg" alt="close">
             </div>
         </div>
         <div class="popup-content">
-            <p>This website is made by <a href="https://www.linkedin.com/in/ricky-jiang-040860192/">Ricky Jiang(Linkedin
+            <p>This website is made by <a href="https://www.linkedin.com/in/ricky-jiang/">Ricky Jiang(Linkedin
                 Profile)</a>.</p><br>
-            <p>I referred the UI from <a href="https://www.covidvisualizer.com">covidvisualizer</a>. The goal of this
+            <p>I referred the style from <a href="https://www.covidvisualizer.com">covidvisualizer</a>. The goal of this
                 project is practicing a complex chart UI with Serverless technology</p><br>
             <p>If you like this project please press star button through <a href="https://github.com/rickysna/VisualizerCovid19">Github page</a></p><br>
             <p>tags:</p>

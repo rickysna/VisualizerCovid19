@@ -306,7 +306,7 @@ p {
     position: absolute;
     left: 50%;
     top: 50%;
-    transform: translate(-450px, -50%);
+    transform: translate(-550px, -50%);
 }
 
 .ranking__header {
