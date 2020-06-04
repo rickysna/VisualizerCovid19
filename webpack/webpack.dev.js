@@ -12,10 +12,11 @@ module.exports = () => {
     }
 
     function getWebpackPlugins(env) {
-        const develop_mode = env.NODE_ENV === 'development';
+        const develop_mode = env.NODE_ENV;
         return [
             new webpack.DefinePlugin({
-                'process.env.development': JSON.stringify(develop_mode),
+                'process.env.dev': JSON.stringify(develop_mode === "development"),
+                'process.env.API_PORT': env['API_PORT']
             }),
             new webpack.optimize.LimitChunkCountPlugin({
                 maxChunks: 1, // disable creating additional chunks
@@ -27,6 +28,7 @@ module.exports = () => {
                     url: packageJSON['url'],
                     description: packageJSON.description,
                     title: packageJSON['title'],
+                    NODE_ENV: develop_mode
                 },
                 title: packageJSON['title'],
                 meta: {

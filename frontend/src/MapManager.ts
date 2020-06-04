@@ -1,16 +1,16 @@
 import {HeatLegend, MapPolygonSeries} from "@amcharts/amcharts4/maps";
 import {CountriesData} from "./models/MapData";
 
-const __useLocalModule__ = process.env.development === 'true';
+const __dev__:any = process.env.dev;
 
 const newWindowObject = window as any;
-const am4maps:typeof import("@amcharts/amcharts4/maps") = __useLocalModule__ ? require("@amcharts/amcharts4/maps") : newWindowObject.am4maps;
-const am4core:typeof import("@amcharts/amcharts4/core") = __useLocalModule__? require("@amcharts/amcharts4/core") : newWindowObject.am4core;
-const am4themes_animated = __useLocalModule__ ? require("@amcharts/amcharts4/themes/animated").default : newWindowObject.am4themes_animated;
-const am4geodata_worldLow = __useLocalModule__ ? require("@amcharts/amcharts4-geodata/worldLow").default : newWindowObject.am4geodata_worldLow;
+const am4maps:typeof import("@amcharts/amcharts4/maps") = __dev__ ? require("@amcharts/amcharts4/maps") : newWindowObject.am4maps;
+const am4core:typeof import("@amcharts/amcharts4/core") = __dev__? require("@amcharts/amcharts4/core") : newWindowObject.am4core;
+const am4themes_animated = __dev__ ? require("@amcharts/amcharts4/themes/animated").default : newWindowObject.am4themes_animated;
+const am4geodata_worldLow = __dev__ ? require("@amcharts/amcharts4-geodata/worldLow").default : newWindowObject.am4geodata_worldLow;
 
 export class MapManager {
-    static __useLocalModule__:boolean = __useLocalModule__;
+    static __dev__ = __dev__;
     static libs = {
         am4maps,
         am4core,

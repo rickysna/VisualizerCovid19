@@ -57,6 +57,7 @@
     </div>
 </div>
 <div id="footer"></div>
+<% if (NODE_ENV === "production") { %>
 <script src="https://www.amcharts.com/lib/4/core.js"></script>
 <script src="https://www.amcharts.com/lib/4/maps.js"></script>
 <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
@@ -70,5 +71,6 @@
 
     gtag('config', 'UA-153706405-2');
 </script>
+<% } %>
 </body>
 </html>
