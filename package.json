@@ -19,7 +19,7 @@
     "coronavirus visualizer"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "serverless offline --httpPort 3000 & webpack-dev-server --mode development --hot --env.NODE_ENV=development --env.API_PORT=3000 & npx cypress open",
     "start": "serverless offline --httpPort 3000 & webpack-dev-server --mode development --hot --env.NODE_ENV=development --env.API_PORT=3000",
     "build": "webpack --env.NODE_ENV=production"
   },
@@ -33,11 +33,13 @@
     "@babel/preset-env": "^7.9.5",
     "babel-loader": "^8.1.0",
     "cypress": "^4.7.0",
+    "cypress-hmr-restarter": "^1.1.0",
     "ejs-loader": "^0.3.6",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.0.0",
     "html-loader": "^1.1.0",
     "html-webpack-plugin": "^4.3.0",
+    "mocha": "^7.2.0",
     "node-fetch": "^2.6.0",
     "particles.js": "^2.0.0",
     "ts-loader": "^7.0.1",
@@ -48,5 +50,10 @@
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/cypress": "^1.1.3",
+    "axios": "^0.19.2"
   }
 }

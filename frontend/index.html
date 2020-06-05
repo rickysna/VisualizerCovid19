@@ -20,11 +20,11 @@
         <h1>COVID-19</h1>
         <p style="opacity: 0.7;">Click on a country or territory to see cases, deaths, and recoveries.</p>
     </div>
-    <div id="particles-js"></div>
-    <div id="chartdiv"></div>
-    <div id="ranking"></div>
+    <div id="particles-js" data-cy="spark"></div>
+    <div id="chartdiv" data-cy="chart"></div>
+    <div id="ranking" data-cy="ranking"></div>
 </div>
-<div id="loading" class="loading-container">
+<div id="loading" class="loading-container" data-cy="loader">
     <div class="lds-ring">
         <div></div>
         <div></div>
@@ -33,15 +33,15 @@
     </div>
 </div>
 <div class="about">
-    <div class="bottom-bar" id="bottomBar">
+    <div class="bottom-bar" id="bottomBar" data-cy="button_click_more">
         <div class="bar">MORE INFORMATION</div>
     </div>
 </div>
-<div class="popup-container" id="popup">
+<div class="popup-container" id="popup" data-cy="more_information_popup">
     <div class="popup-wrapper" data-mark="wrapper">
         <div class="popup-header">
             <h2>More Information</h2>
-            <div class="popup-close" data-mark="close">
+            <div class="popup-close" data-mark="close" data-cy="popup_close">
                 <img src="src/assets/close.svg" alt="close">
             </div>
         </div>

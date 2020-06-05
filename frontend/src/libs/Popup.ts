@@ -21,7 +21,7 @@ export class Popup {
             this.closeButton.addEventListener('click', () => this.hide(), false);
         }
         this.container.addEventListener('mousedown', (ev) => {
-            if (ev.target === this.container) this.hide();
+            if (ev.currentTarget === this.container) this.hide();
         }, false);
     }
 }
