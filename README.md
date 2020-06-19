@@ -1,6 +1,10 @@
 # COVID-19 Visualizer
 
-An interactive COVID-19 (coronavirus) visualizer that highlights countries around the world based on the most recent cases.
+An interactive COVID-19 (coronavirus) visualizer that highlights countries around the world based on the most recent cases. 
+
+Visit [theworldcovid19.info](https://theworldcovid19.info/) see if you like it!
+
+![screenshot of this project](https://raw.githubusercontent.com/rickysna/VisualizerCovid19/master/frontend/src/assets/screenshot.png)
 
 ## Getting Started
 
