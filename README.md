@@ -68,3 +68,7 @@ npm run analysis_bundle
 ## Authors
 
 * **Ricky Jiang** - *Initial work* - [LinkedIn](https://www.linkedin.com/in/ricky-jiang)
+
+## Acknowledgments
+I referred the UI from [covidvisualizer](https://www.covidvisualizer.com). The goal of this
+project is practicing a complex chart UI with Serverless technology
