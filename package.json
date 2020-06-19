@@ -19,9 +19,11 @@
     "coronavirus visualizer"
   ],
   "scripts": {
-    "test": "serverless offline --httpPort 3000 & webpack-dev-server --mode development --hot --env.NODE_ENV=development --env.API_PORT=3000 & npx cypress open",
-    "start": "serverless offline --httpPort 3000 & webpack-dev-server --mode development --hot --env.NODE_ENV=development --env.API_PORT=3000",
-    "build": "webpack --env.NODE_ENV=production"
+    "test": "serverless offline --httpPort 3000 & webpack-dev-server --mode development --hot --env.NODE_ENV=dev --env.API_PORT=3000 & npx cypress open",
+    "start": "serverless offline --httpPort 3000 & webpack-dev-server --mode development --hot --env.NODE_ENV=dev --env.API_PORT=3000",
+    "build_frontend": "webpack --env.NODE_ENV=release",
+    "build_and_deploy": "webpack --env.NODE_ENV=release & serverless deploy",
+    "analysis_bundle": "webpack --env.NODE_ENV=analysis"
   },
   "author": "Ricky Jiang",
   "license": "ISC",

@@ -47,5 +47,9 @@ package:
   exclude:
     - frontend/**
     - package-lock.json
-  include:
+    - cypress/**
+    - webpack/**
+    - webpack.config.js
+    - tsconfig.json
+    - cypress.json
     - node_modules/**

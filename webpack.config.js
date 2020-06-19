@@ -1,10 +1,8 @@
 const path = require('path');
-const devController = require('./webpack/webpack.dev')();
-const releaseController = require('./webpack/webpack.release')();
 
 module.exports = (env) => {
-    const develop_mode = env.NODE_ENV === 'development';
-    const controller = develop_mode ? devController : releaseController;
+    const mode = env.NODE_ENV || 'dev';
+    const controller = require(`./webpack/webpack.${mode}`)();
 
     return {
         entry: {

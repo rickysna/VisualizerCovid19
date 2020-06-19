@@ -15,7 +15,7 @@ module.exports = () => {
         const develop_mode = env.NODE_ENV;
         return [
             new webpack.DefinePlugin({
-                'process.env.dev': JSON.stringify(develop_mode === "development"),
+                'process.env.dev': 'true',
                 'process.env.API_PORT': env['API_PORT']
             }),
             new webpack.optimize.LimitChunkCountPlugin({
