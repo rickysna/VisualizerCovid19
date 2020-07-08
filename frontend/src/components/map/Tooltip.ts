@@ -1,5 +1,5 @@
 import { CountryData, TimeSeries } from "../../models";
-import MapManager from "../../MapManager";
+import MapManager from "../../controllers/MapManager";
 import * as tools from "../../libs/tools";
 
 export default class Tooltip {

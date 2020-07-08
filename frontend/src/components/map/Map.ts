@@ -3,9 +3,10 @@ import { FeatureCollection } from "@amcharts/amcharts4-geodata/.internal/Geodata
 import { Animation } from "@amcharts/amcharts4/.internal/core/utils/Animation";
 import CountryPolygon from "./Country";
 import Legend from "./Legend";
-import MapManager from "../../MapManager";
+import MapManager from "../../controllers/MapManager";
 import { CountriesData } from "../../models";
-import AppManager from "../../AppManager";
+import AppManager from "../../controllers/AppManager";
+import particles from "../../views/particles";
 
 export default class Map {
     chart:any;
@@ -32,6 +33,7 @@ export default class Map {
     }
 
     initial() {
+      Map.initialBackground();
       this.chart = MapManager.createChart("chartdiv");
       this.chart.seriesWidth = 400;
       this.chart.seriesHeight = 400;
@@ -52,6 +54,10 @@ export default class Map {
       };
     }
 
+    static initialBackground() {
+      particles("particles-js");
+    }
+
     setChartPolygonColor() {
       this.chart.backgroundSeries.mapPolygons.template.polygon.fill = MapManager.libs.am4core.color("#000");
       this.chart.backgroundSeries.mapPolygons.template.polygon.fillOpacity = 0.5;
@@ -68,7 +74,7 @@ export default class Map {
         this.chart.geodata = continents;
       } catch (e) {
         this.chart.raiseCriticalError(
-          new Error("Map geodata could not be loaded. Please download the latest <a href=\"https://www.amcharts.com/download/download-v4/\">amcharts geodata</a> and extract its contents into the same directory as your amCharts files.")
+          new Error("Map geodata could not be loaded. Please download the latest <a href=\"https://www.amcharts.com/download/download-v4/\">amcharts geodata</a> and extract its contents into the same directory as your amCharts files."),
         );
       }
     }

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { MapData } from "./index";
-import MapManager from "../MapManager";
+import MapManager from "../controllers/MapManager";
 
 function getCountriesData(): Promise<MapData> {
   let api = "https://3u4nbpkiqe.execute-api.us-east-1.amazonaws.com/dev/api";

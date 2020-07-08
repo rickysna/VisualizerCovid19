@@ -1,40 +1,28 @@
-import particles from "./libs/particles";
-import AppManager from "./AppManager";
-import Popup from "./libs/Popup";
-import { CountryData } from "./models";
+import AppManager from "./controllers/AppManager";
+import Popup from "./views/Popup";
 import Map from "./components/map/Map";
+import Ranking from "./views/Ranking";
+import Footer from "./views/Footer";
+import Loading from "./views/Loading";
 
-AppManager.API.getCountriesData().then((api) => {
-  particles("particles-js");
-
-  const dataSortByActive: CountryData[] = Object.values(api.countries).sort((va, vb) => {
-    const vaIndex = Object.values(api.countries).indexOf(va);
-    const vbIndex = Object.values(api.countries).indexOf(vb);
-    const vaName = Object.keys(api.countries)[vaIndex];
-    const vbName = Object.keys(api.countries)[vbIndex];
-    const vaNameIndex = api.countriesSortedByActive.indexOf(vaName);
-    const vbNameIndex = api.countriesSortedByActive.indexOf(vbName);
-
-    return vaNameIndex < vbNameIndex ? -1 : 1;
-  });
-
+AppManager.API.getCountriesData().then((data) => {
   return {
-    map: new Map(api.countries, "reports"),
-    ranking: new AppManager.components.Ranking("ranking", dataSortByActive, api.timestamp),
-    footer: new AppManager.components.Footer("footer", api.worldwide, api.timestamp),
+    map: new Map(data.countries, "reports"),
+    ranking: new Ranking("ranking", data),
+    footer: new Footer("footer", data.worldwide, data.timestamp),
+    popup: new Popup("popup"),
+    loading: new Loading("loading"),
   };
-}).then(() => {
+}).then((components) => {
+  AppManager.components = components;
   AppManager.events.triggerEvent("MapReady");
 });
 
 AppManager.events.addEventListener("MapReady", () => {
-  const loader = document.getElementById("loading");
-  loader.style.opacity = "0";
-  setTimeout(() => {
-    loader.style.display = "none";
-  }, 200);
+  AppManager.components.loading.hide();
 
-  const popup = new Popup("popup");
   document.getElementById("bottomBar")
-    .addEventListener("click", () => popup.show(), false);
+    .addEventListener("click", () => {
+      if (AppManager.components.popup !== undefined) AppManager.components.popup.show();
+    }, false);
 });

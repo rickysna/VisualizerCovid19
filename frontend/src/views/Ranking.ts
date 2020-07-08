@@ -1,15 +1,30 @@
-import { CountryData } from "../models";
+import { CountryData, MapData } from "../models";
 import * as tools from "../libs/tools";
-import MapManager from "../MapManager";
-import AppManager from "../AppManager";
+import MapManager from "../controllers/MapManager";
+import AppManager from "../controllers/AppManager";
 
 export default class Ranking {
     container: HTMLElement;
 
-    constructor(elementId: string, data: CountryData[], timestamp: string) {
+    constructor(elementId: string, data: MapData) {
       this.container = document.getElementById(elementId);
 
-      this.container.innerHTML = Ranking.getRankingTemplate(Ranking.renderItems(data), timestamp);
+      const dataSortByActive: CountryData[] = Object.values(data.countries).sort((va, vb) => {
+        const vaIndex = Object.values(data.countries).indexOf(va);
+        const vbIndex = Object.values(data.countries).indexOf(vb);
+        const vaName = Object.keys(data.countries)[vaIndex];
+        const vbName = Object.keys(data.countries)[vbIndex];
+        const vaNameIndex = data.countriesSortedByActive.indexOf(vaName);
+        const vbNameIndex = data.countriesSortedByActive.indexOf(vbName);
+
+        return vaNameIndex < vbNameIndex ? -1 : 1;
+      });
+
+      this.container.innerHTML = Ranking.getRankingTemplate(
+        Ranking.renderItems(dataSortByActive),
+        data.timestamp,
+      );
+
       this.addEvents();
     }
 

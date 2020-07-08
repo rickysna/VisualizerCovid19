@@ -1,6 +1,6 @@
 import { MapPolygon } from "@amcharts/amcharts4/maps";
 import { iRGB } from "@amcharts/amcharts4/.internal/core/utils/Colors";
-import MapManager from "../../MapManager";
+import MapManager from "../../controllers/MapManager";
 
 type RuleProperty = {
   itemsPercent: number, // <= 1 本分组占总数据句比例

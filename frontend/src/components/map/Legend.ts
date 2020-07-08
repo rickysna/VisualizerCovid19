@@ -1,5 +1,5 @@
 import { HeatLegend } from "@amcharts/amcharts4/maps";
-import MapManager from "../../MapManager";
+import MapManager from "../../controllers/MapManager";
 
 export default class Legend {
     chart:HeatLegend;
