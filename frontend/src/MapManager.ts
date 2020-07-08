@@ -1,5 +1,5 @@
 import { HeatLegend, MapPolygonSeries } from "@amcharts/amcharts4/maps";
-import { CountriesData } from "./models/MapData";
+import { CountriesData } from "./models";
 
 const { dev } = process.env;
 

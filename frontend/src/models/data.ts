@@ -1,8 +1,8 @@
 import axios from "axios";
-import { API } from "./models/MapData";
-import MapManager from "./MapManager";
+import { MapData } from "./index";
+import MapManager from "../MapManager";
 
-function getCountriesData(): Promise<API> {
+function getCountriesData(): Promise<MapData> {
   let api = "https://3u4nbpkiqe.execute-api.us-east-1.amazonaws.com/dev/api";
   if (MapManager.dev) {
     api = `http://localhost:${process.env.API_PORT}/dev/api`;

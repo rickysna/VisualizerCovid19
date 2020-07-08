@@ -1,8 +1,8 @@
 import particles from "./libs/particles";
 import AppManager from "./AppManager";
-import { Popup } from "./libs/Popup";
-import { CountryData } from "./models/MapData";
-import { Map } from "./components/map/Map";
+import Popup from "./libs/Popup";
+import { CountryData } from "./models";
+import Map from "./components/map/Map";
 
 AppManager.API.getCountriesData().then((api) => {
   particles("particles-js");

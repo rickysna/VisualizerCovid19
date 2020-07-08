@@ -1,7 +1,7 @@
 /* Imports */
 import { FeatureCollection } from "@amcharts/amcharts4-geodata/.internal/Geodata";
 import { Animation } from "@amcharts/amcharts4/.internal/core/utils/Animation";
-import { CountryPolygon } from "./Country";
+import CountryPolygon from "./Country";
 import Legend from "./Legend";
 import MapManager from "../../MapManager";
 import { CountriesData } from "../../models";

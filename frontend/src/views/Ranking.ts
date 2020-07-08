@@ -1,4 +1,4 @@
-import { CountryData } from "../models/MapData";
+import { CountryData } from "../models";
 import * as tools from "../libs/tools";
 import MapManager from "../MapManager";
 import AppManager from "../AppManager";

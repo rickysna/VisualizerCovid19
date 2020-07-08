@@ -1,7 +1,7 @@
 import Broadcast from "./libs/Broadcast";
-import Footer from "./components/Footer";
-import data from "./data";
-import Ranking from "./components/Ranking";
+import Footer from "./views/Footer";
+import data from "./models/data";
+import Ranking from "./views/Ranking";
 import Popup from "./libs/Popup";
 
 export default class AppManager {

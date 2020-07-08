@@ -1,4 +1,4 @@
-import { Worldwide } from "../models/MapData";
+import { Worldwide } from "../models";
 import * as tools from "../libs/tools";
 
 const infoSVG = require("../assets/info.svg");
