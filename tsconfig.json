@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "rootDir": "./frontend/src",
+    "experimentalDecorators": true,
+    "downlevelIteration": true,
+    "rootDir": "./frontend/",
     "outDir": "./frontend/dist/",
     "noImplicitAny": true,
     "sourceMap": true,
@@ -11,6 +13,6 @@
     "moduleResolution": "node"
   },
   "include": [
-    "./frontend/src"
+    "./frontend/"
   ]
 }

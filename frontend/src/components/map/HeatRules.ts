@@ -19,10 +19,8 @@ interface _ruleProperty extends RuleProperty {
 export default class HeatRules {
   rules: RuleProperty[] = [];
 
-  dataField: string;
+  constructor(public dataField: string) {
 
-  constructor(dataField: string) {
-    this.dataField = dataField;
   }
 
   pushRule(data: RuleProperty) {

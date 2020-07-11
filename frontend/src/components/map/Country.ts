@@ -2,15 +2,11 @@ import { MapPolygonSeries } from "@amcharts/amcharts4/maps";
 import HeatRules from "./HeatRules";
 import Tooltip from "./Tooltip";
 import MapManager from "../../controllers/MapManager";
-import { CountriesData } from "../../models";
 
 export default class CountryPolygon {
-  polygonSeries: MapPolygonSeries;
-
   tooltips: Tooltip;
 
-  constructor(renderData: CountriesData, dataField: string) {
-    this.polygonSeries = MapManager.createPolygonSeries(renderData, dataField);
+  constructor(public polygonSeries: MapPolygonSeries) {
     this.polygonSeries.calculateVisualCenter = true;
     this.polygonSeries.useGeodata = true;
     this.setCountriesStroke();

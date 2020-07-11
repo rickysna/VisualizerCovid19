@@ -1,15 +1,15 @@
-/* Imports */
 import { FeatureCollection } from "@amcharts/amcharts4-geodata/.internal/Geodata";
 import { Animation } from "@amcharts/amcharts4/.internal/core/utils/Animation";
+import { MapChart } from "@amcharts/amcharts4/maps";
 import CountryPolygon from "./Country";
 import Legend from "./Legend";
 import MapManager from "../../controllers/MapManager";
 import { CountriesData } from "../../models";
-import AppManager from "../../controllers/AppManager";
-import particles from "../../views/particles";
+import App from "../../controllers/App";
+import particles from "../../libs/particles";
 
 export default class Map {
-    chart:any;
+    chart:MapChart;
 
     animatable = false;
 
@@ -21,11 +21,10 @@ export default class Map {
 
     constructor(data: CountriesData, dataField: string) {
       this.initial();
-      this.limitVerticalRotate();
-      this.automateRotateEarth();
-      if (MapManager.chart) {
-        this.countryPolygon = new CountryPolygon(data, dataField);
-        if (MapManager.polygonSeries) {
+      if (this.chart) {
+        const polygonSeries = MapManager.createPolygonSeries(data, dataField);
+        this.countryPolygon = new CountryPolygon(polygonSeries);
+        if (polygonSeries) {
           this.legend = new Legend(dataField);
         }
       }
@@ -35,8 +34,6 @@ export default class Map {
     initial() {
       Map.initialBackground();
       this.chart = MapManager.createChart("chartdiv");
-      this.chart.seriesWidth = 400;
-      this.chart.seriesHeight = 400;
       this.setChartContinentsLevel(MapManager.libs.geodata.am4geodata_worldLow);
       this.setChartProjection();
       this.setChartPolygonColor();
@@ -44,7 +41,10 @@ export default class Map {
       this.chart.deltaLatitude = 0;
       // 移动方式
       this.chart.panBehavior = "rotateLongLat";
+      this.limitVerticalRotate();
+      this.automateRotateEarth();
 
+      // 重构
       window.onresize = () => {
         if (window.innerWidth > 1000) {
           this.scaleMap(this.scale = 0.7);
@@ -81,9 +81,9 @@ export default class Map {
 
     // limits vertical rotation
     limitVerticalRotate() {
-      this.chart.adapter.add("deltaLatitude", (delatLatitude:any) => {
-        MapManager.libs.am4core.math.fitToRange(delatLatitude, -90, 90);
-      });
+      // this.chart.adapter.add("deltaLatitude", (delatLatitude) => {
+      //   MapManager.libs.am4core.math.fitToRange(delatLatitude, -90, 90);
+      // });
     }
 
     // animation
@@ -111,7 +111,7 @@ export default class Map {
         if (this.chart.seriesContainer.isReady()) {
           resolve();
         } else {
-          this.chart.seriesContainer.events.on("ready", (ev: any) => {
+          this.chart.seriesContainer.events.on("ready", () => {
             resolve();
           });
         }
@@ -124,7 +124,6 @@ export default class Map {
         seriesElement.scale = scale;
         this.centralContainer(scale);
         seriesElement.transform = this.centralContainer.bind(this, scale, true);
-        AppManager.events.triggerEvent("MapReady");
       });
     }
 

@@ -1,4 +1,4 @@
-import { HeatLegend, MapPolygonSeries } from "@amcharts/amcharts4/maps";
+import { HeatLegend, MapChart, MapPolygonSeries } from "@amcharts/amcharts4/maps";
 import { CountriesData } from "../models";
 
 const { dev } = process.env;
@@ -23,7 +23,7 @@ export default class MapManager {
 
   static data: any[];
 
-  static chart: any;
+  static chart: MapChart;
 
   static polygonSeries: MapPolygonSeries;
 

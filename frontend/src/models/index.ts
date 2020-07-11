@@ -1,3 +1,9 @@
+import FooterView from "../views/FooterView";
+import RankingView from "../views/RankingView";
+import PopupView from "../views/PopupView";
+import Map from "../components/map/Map";
+import LoaderView from "../views/LoaderView";
+
 export interface TimeSeries {
     confirmed: number[],
     deaths: number[],
@@ -36,4 +42,19 @@ export interface MapData {
     countriesSortedByActive: CountriesSortedByActive,
     timestamp: string,
     max: string
+}
+
+export interface DateDiffer {
+    days: number,
+    hours: number,
+    minutes: number,
+    seconds: number,
+}
+
+export interface Components {
+    map: Map,
+    ranking: RankingView,
+    footer: FooterView,
+    popup: PopupView,
+    loading: LoaderView,
 }

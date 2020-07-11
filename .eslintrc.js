@@ -18,18 +18,16 @@ module.exports = {
     quotes: [2, "double"],
     "import/extensions": ["error", "ignorePackages", {
       js: "never",
-      mjs: "never",
-      jsx: "never",
       ts: "never",
-      tsx: "never",
     }],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
+    "no-param-reassign": 0,
   },
   settings: {
     "import/resolver": {
       node: {
-        extensions: [".js", ".jsx", ".ts", ".tsx", ".json"],
+        extensions: [".js", ".ts"],
       },
     },
   },
