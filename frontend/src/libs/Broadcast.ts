@@ -34,16 +34,20 @@ export default class Broadcast {
   }
 
   public addEventListener(eventName: string, invoke: Invoke, params?: EventParameters) {
-    const hook: HookParameters = {
-      invoke: null,
-      _invoke: invoke,
-      eventName,
-      ...params,
-    };
+    if (invoke instanceof Function) {
+      const hook: HookParameters = {
+        invoke: null,
+        _invoke: invoke,
+        eventName,
+        ...params,
+      };
 
-    hook.invoke = this.executeInvoke(hook, invoke);
+      hook.invoke = this.executeInvoke(hook, invoke);
 
-    this.addHook(eventName, hook);
+      this.addHook(eventName, hook);
+    } else {
+      console.warn("callback parameter is undefined");
+    }
   }
 
   // eslint-disable-next-line class-methods-use-this
