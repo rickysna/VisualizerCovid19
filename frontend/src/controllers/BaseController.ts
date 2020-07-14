@@ -42,7 +42,7 @@ abstract class BaseController
     }
 
     const data = this.viewDataFields.getAll();
-    this.view = new this.ViewClass(this.elementId, this.events, data);
+    this.view = new this.ViewClass(this.elementId, data);
 
     this.initHooks();
   }

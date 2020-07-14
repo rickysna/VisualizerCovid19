@@ -2,15 +2,17 @@ import Broadcast from "../libs/Broadcast";
 import { DataFieldsCo } from "../controllers/DataFields";
 
 export interface BaseViewConstructor<View extends BaseView<any>> {
-  new(elementId: string, events: Broadcast, data: DataFieldsCo): View
+  new(elementId: string, data: DataFieldsCo): View
 }
 
 export default abstract class BaseView<Data> {
   private firstRender: boolean = true;
 
+  public events: Broadcast = new Broadcast();
+
   viewNode: HTMLElement;
 
-  constructor(public elementId: string, public events: Broadcast, public data: Data) {
+  constructor(public elementId: string, public data: Data) {
     this.viewNode = this.findDom();
     this.performRender();
   }

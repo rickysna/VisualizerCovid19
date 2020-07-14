@@ -1,5 +1,5 @@
 import Broadcast from "../libs/Broadcast";
-import {ModelReady} from "../events";
+import { ModelReady } from "../events";
 
 export function preRequest(
   target: any,
