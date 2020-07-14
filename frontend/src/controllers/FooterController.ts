@@ -2,7 +2,8 @@ import BaseController from "./BaseController";
 import * as tools from "../libs/tools";
 import MapModel from "../models/MapModel";
 import FooterView from "../views/FooterView";
-import { Worldwide } from "../models";
+import { MapData, Worldwide } from "../models";
+import { MapModelDispatchMapData, MapModelGetMapData } from "../events";
 
 export interface IFooterData {
   totalCases: number,
@@ -22,8 +23,14 @@ export default class FooterController extends BaseController<MapModel, FooterVie
   }
 
   onReady() {
-    const { timestamp, worldwide } = this.model.getMapData();
+    this.events.triggerEvent(MapModelDispatchMapData);
+  }
 
+  registerHooks() {
+    this.events.addEventListener(MapModelGetMapData, () => this.handleMapData);
+  }
+
+  handleMapData = ({ timestamp, worldwide }: MapData) => {
     this.viewDataFields.addFieldData("timestamp", timestamp);
     this.viewDataFields.addFieldData("totalRecords", worldwide);
 

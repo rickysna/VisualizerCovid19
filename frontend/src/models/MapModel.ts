@@ -9,21 +9,15 @@ import {
 } from "../events";
 
 export default class MapModel extends BaseModel<MapData> {
+
+  selectedCountryId: string;
+
   registerHooks(): void {
-    this.events.addEventListener(MapModelDispatchMapData, () => {
-      const mapData = this.getMapData();
-      this.events.triggerEvent(MapModelGetMapData, { data: mapData });
-    });
+    this.events.addEventListener(MapModelDispatchMapData, () => this.getMapData());
 
-    this.events.addEventListener(MapModelDispatchCountriesData, () => {
-      const countriesData = this.getCountriesData();
-      this.events.triggerEvent(MapModelGetCountriesData, { data: countriesData });
-    });
+    this.events.addEventListener(MapModelDispatchCountriesData, () => this.getCountriesData());
 
-    this.events.addEventListener(MapModelDispatchCountriesDataByCases, () => {
-      const mapData = this.getCountriesDataSortByCases();
-      this.events.triggerEvent(MapModelGetCountriesDataByCases, { data: mapData });
-    });
+    this.events.addEventListener(MapModelDispatchCountriesDataByCases, () => this.getCountriesDataSortByCases());
   }
 
   fetchData() {
@@ -32,18 +26,18 @@ export default class MapModel extends BaseModel<MapData> {
     });
   }
 
-  getMapData(): MapData {
-    return this.data;
+  getMapData() {
+    this.events.triggerEvent(MapModelGetMapData, { data: this.data });
   }
 
-  getCountriesData(): CountriesData {
-    return this.data.countries;
+  getCountriesData() {
+    this.events.triggerEvent(MapModelGetCountriesData, { data: this.data.countries });
   }
 
-  getCountriesDataSortByCases(): CountriesData[] {
+  getCountriesDataSortByCases() {
     const countriesData = this.data.countries;
 
-    return Object.values(countriesData).sort((va, vb) => {
+    const sortedData = Object.values(countriesData).sort((va, vb) => {
       const vaIndex = Object.values(countriesData).indexOf(va);
       const vbIndex = Object.values(countriesData).indexOf(vb);
       const vaName = Object.keys(countriesData)[vaIndex];
@@ -53,5 +47,7 @@ export default class MapModel extends BaseModel<MapData> {
 
       return vaNameIndex < vbNameIndex ? -1 : 1;
     });
+
+    this.events.triggerEvent(MapModelGetCountriesDataByCases, { data: sortedData });
   }
 }

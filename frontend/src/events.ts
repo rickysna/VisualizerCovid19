@@ -5,3 +5,6 @@ export const MapModelGetCountriesData = "map_model_get_countries_data";
 export const MapModelDispatchCountriesDataByCases = "map_model_dispatch_countries_data_by_cases";
 export const MapModelGetCountriesDataByCases = "map_model_get_countries_data_by_cases";
 export const ModelReady = "model_ready";
+export const MapModelUpdateSelectedCountryID = "map_model_update_selected_country_id";
+
+export const RankingViewUpdateCountryID = "ranking_view_update_country_id";
