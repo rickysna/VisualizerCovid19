@@ -1,10 +1,4 @@
-import FooterView from "../views/FooterView";
-import RankingView from "../views/RankingView";
-import PopupView from "../views/PopupView";
-import Map from "../components/map/Map";
-import LoaderView from "../views/LoaderView";
-
-export interface TimeSeries {
+export interface ITimeSeries {
     confirmed: number[],
     deaths: number[],
     recovered: number[],
@@ -22,7 +16,7 @@ export interface CountryData {
     deaths: number,
     recovered: number,
     population: number,
-    timeseries?: TimeSeries,
+    timeseries?: ITimeSeries,
     [key:string]: any
 }
 
@@ -49,12 +43,4 @@ export interface DateDiffer {
     hours: number,
     minutes: number,
     seconds: number,
-}
-
-export interface Components {
-    map: Map,
-    ranking: RankingView,
-    footer: FooterView,
-    popup: PopupView,
-    loading: LoaderView,
 }
