@@ -5,11 +5,10 @@ import {
   MapModelDispatchCountriesData, MapModelDispatchCountriesDataByCases,
   MapModelDispatchMapData,
   MapModelGetCountriesData, MapModelGetCountriesDataByCases,
-  MapModelGetMapData,
+  MapModelGetMapData, MapModelGetSelectedCountryID, MapModelUpdateSelectedCountryID,
 } from "../events";
 
 export default class MapModel extends BaseModel<MapData> {
-
   selectedCountryId: string;
 
   registerHooks(): void {
@@ -18,6 +17,8 @@ export default class MapModel extends BaseModel<MapData> {
     this.events.addEventListener(MapModelDispatchCountriesData, () => this.getCountriesData());
 
     this.events.addEventListener(MapModelDispatchCountriesDataByCases, () => this.getCountriesDataSortByCases());
+
+    this.events.addEventListener(MapModelUpdateSelectedCountryID, (id: string) => this.updateSelectedCountryID(id));
   }
 
   fetchData() {
@@ -37,7 +38,7 @@ export default class MapModel extends BaseModel<MapData> {
   getCountriesDataSortByCases() {
     const countriesData = this.data.countries;
 
-    const sortedData = Object.values(countriesData).sort((va, vb) => {
+    const sortedData:CountriesData[] = Object.values(countriesData).sort((va, vb) => {
       const vaIndex = Object.values(countriesData).indexOf(va);
       const vbIndex = Object.values(countriesData).indexOf(vb);
       const vaName = Object.keys(countriesData)[vaIndex];
@@ -49,5 +50,12 @@ export default class MapModel extends BaseModel<MapData> {
     });
 
     this.events.triggerEvent(MapModelGetCountriesDataByCases, { data: sortedData });
+  }
+
+  updateSelectedCountryID(id: string) {
+    if (id) {
+      this.selectedCountryId = id;
+      this.events.triggerEvent(MapModelGetSelectedCountryID, { data: id });
+    }
   }
 }
