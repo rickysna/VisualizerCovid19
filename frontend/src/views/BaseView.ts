@@ -1,5 +1,5 @@
 import Broadcast from "../libs/Broadcast";
-import { DataFieldsCo } from "../controllers/DataFields";
+import { DataFieldsCo } from "../libs/DataFields";
 
 export interface BaseViewConstructor<View extends BaseView<any>> {
   new(elementId: string, data: DataFieldsCo): View
@@ -14,7 +14,6 @@ export default abstract class BaseView<Data> {
 
   constructor(public elementId: string, public data: Data) {
     this.viewNode = this.findDom();
-    this.performRender();
   }
 
   private findDom() {
@@ -28,13 +27,15 @@ export default abstract class BaseView<Data> {
   }
 
   performRender(data?: any) {
+    if (!this.firstRender && this.updateView) {
+      this.updateView(data);
+    }
+
     if (this.firstRender) {
       const template = this.render && this.render();
       if (typeof template === "string") {
         this.viewNode.innerHTML = template;
       }
-    } else if (this.updateView) {
-      this.updateView(data);
     }
 
     if (this.firstRender && this.registerHooks) this.registerHooks();
