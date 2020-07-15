@@ -1,5 +1,5 @@
 import Broadcast from "../libs/Broadcast";
-import DataFields from "./DataFields";
+import DataFields from "../libs/DataFields";
 import BaseModel, { BaseModelConstructor } from "../models/BaseModel";
 import BaseView, { BaseViewConstructor } from "../views/BaseView";
 import { checkClassProps } from "../libs/decorators";
@@ -10,10 +10,7 @@ export interface BaseControllerConstructor<
   View extends BaseView<any>,
   Data,
 > {
-  new (
-    ModelClass: Model | BaseModelConstructor<any, Model>,
-    ViewClass: BaseViewConstructor<View>
-  ): BaseController<Model, View, Data>
+  new (): BaseController<Model, View, Data>
 }
 
 @checkClassProps("elementId")
@@ -23,6 +20,10 @@ abstract class BaseController
 
   public view: View;
 
+  public get immediateRender():boolean {
+    return true;
+  }
+
   public get elementId():string | undefined {
     return undefined;
   }
@@ -31,10 +32,7 @@ abstract class BaseController
 
   public viewDataFields: DataFields<Data> = new DataFields();
 
-  constructor(
-    public readonly ModelClass: Model | BaseModelConstructor<any, Model>,
-    public readonly ViewClass: BaseViewConstructor<View>,
-  ) {
+  init(ModelClass: Model | BaseModelConstructor<any, Model>, ViewClass: BaseViewConstructor<View>) {
     if (ModelClass instanceof BaseModel) {
       this.model = ModelClass;
     } else {
@@ -42,7 +40,11 @@ abstract class BaseController
     }
 
     const data = this.viewDataFields.getAll();
-    this.view = new this.ViewClass(this.elementId, data);
+    this.view = new ViewClass(this.elementId, data);
+
+    if (this.immediateRender) {
+      this.view.performRender();
+    }
 
     this.initHooks();
   }
