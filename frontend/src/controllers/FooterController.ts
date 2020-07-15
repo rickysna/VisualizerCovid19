@@ -22,12 +22,16 @@ export default class FooterController extends BaseController<MapModel, FooterVie
     return "footer";
   }
 
+  get immediateRender() {
+    return false;
+  }
+
   onReady() {
     this.events.triggerEvent(MapModelDispatchMapData);
   }
 
   registerHooks() {
-    this.events.addEventListener(MapModelGetMapData, () => this.handleMapData);
+    this.events.addEventListener(MapModelGetMapData, this.handleMapData.bind(this));
   }
 
   handleMapData = ({ timestamp, worldwide }: MapData) => {
