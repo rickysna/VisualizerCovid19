@@ -9,11 +9,14 @@ import RankingView from "./src/views/RankingView";
 import PopupController from "./src/controllers/PopupController";
 import PopupView from "./src/views/PopupView";
 import particles from "./src/libs/particles";
+import ChartController from "./src/controllers/ChartController";
+import ChartView from "./src/views/ChartView";
 
 const mapModel = new MapModel();
 App.registerControllers(FooterController, FooterView, mapModel);
 App.registerControllers(LoaderController, LoaderView, mapModel);
 App.registerControllers(RankingController, RankingView, mapModel);
 App.registerControllers(PopupController, PopupView, mapModel);
+App.registerControllers(ChartController, ChartView, mapModel);
 
 particles("particles-js");
