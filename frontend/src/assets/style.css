@@ -37,9 +37,12 @@ p {
 }
 
 #chartdiv {
-    max-width: 100%;
+    max-width: calc(50% + 100px);
     height: 100%;
+    max-height: 760px;
     min-height: 600px;
+    position: relative;
+    left: calc(50% - 100px);
 }
 
 #particles-js {
