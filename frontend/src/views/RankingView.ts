@@ -2,7 +2,7 @@ import BaseView from "./BaseView";
 import { CountryData } from "../models";
 import * as tools from "../libs/tools";
 import { IRankingData } from "../controllers/RankingController";
-import {RankingViewUpdateCountryID} from "../events";
+import { RankingViewUpdateCountryID } from "../events";
 
 const delegate = require("delegate-events");
 
@@ -56,22 +56,7 @@ export default class RankingView extends BaseView<IRankingData> {
     delegate.bind(this.viewNode, ".country", "click", (e: any) => {
       const countryId = e.delegateTarget.getAttribute("data-name");
 
-      this.events.triggerEvent(RankingViewUpdateCountryID, countryId);
-      //       MapManager.polygonSeries.mapPolygons.each((mapPolygon) => {
-      //         // @ts-ignore
-      //         if (mapPolygon.dataItem.dataContext.id === countryId) {
-      //           const eventPointerdown = new Event("pointerdown");
-      //           const eventMouseenter = new Event("mouseenter");
-      //           // @ts-ignore
-      //           eventMouseenter.buttons = 0;
-      //           // @ts-ignore
-      //           eventMouseenter.which = 0;
-      //           // @ts-ignore
-      //           eventMouseenter.relatedTarget = null;
-      //           mapPolygon.dom.dispatchEvent(eventPointerdown);
-      //           document.dispatchEvent(eventMouseenter);
-      //         }
-      //       });
+      this.events.triggerEvent(RankingViewUpdateCountryID, { data: countryId});
     });
   }
 }

@@ -37,8 +37,4 @@ export default class FooterView extends BaseView<IFooterData> {
       </p>
     `;
   }
-
-  updateView() {
-    this.viewNode.innerHTML = this.render();
-  }
 }
