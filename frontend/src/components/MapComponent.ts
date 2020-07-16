@@ -22,6 +22,8 @@ interface IMapColorDefinition extends IMapColorDefinitionParameter {
 }
 
 export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries> {
+  displayModel: TDisplayModel;
+
   mapColorDefinition: IMapColorDefinition[] = [];
 
   mapPolygons: {[key:string]: MapPolygon} = {};
@@ -55,6 +57,10 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
     const strokeColor = am4core.color("#450000"); // 区块边框颜色
     let backgroundColor = am4core.color("#242424");
 
+    this.target.tooltip.background.disabled = true;
+
+    this.target.tooltip.dom.setAttribute("class", "tooltip-animation");
+
     this.target.mapPolygons.each((mapPolygon) => {
       // @ts-ignore
       const countryID = mapPolygon.dataItem.dataContext.id;
@@ -69,7 +75,6 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
       mapPolygon.strokeWidth = 0.1;
       mapPolygon.nonScalingStroke = true;
 
-      mapPolygon.tooltip.background.disabled = true;
       mapPolygon.tooltipPosition = "fixed";
       mapPolygon.showTooltipOn = "hit";
       mapPolygon.tooltip.pointerOrientation = "down";
@@ -218,18 +223,18 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
 
   private centralizeTooltipPosition() {
     const containerBox = this.target.dom.getBBox();
-    // const tooltipBox = this.target.tooltip.dom.getBBox();
 
-    const axisX = containerBox.width / 2;
-    const axisY = containerBox.y + containerBox.height / 2;
+    let offsetX = 30;
+    const offsetY = 90;
 
-    this.target.tooltip.animate([{
-      to: axisX,
-      property: "x",
-    }, {
-      to: axisY,
-      property: "y",
-    }], 1000, am4core.ease.linear);
+    if (this.displayModel === "mobile") {
+      offsetX = 0;
+    }
+
+    const axisX = containerBox.x + containerBox.width / 2 + offsetX;
+    const axisY = containerBox.y + containerBox.height / 2 + offsetY;
+
+    this.target.tooltip.dom.setAttribute("transform", `translate(${axisX}, ${axisY})`);
   }
 
   selectCountry(countryID: string) {
@@ -250,5 +255,6 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
 
   onResize(model: TDisplayModel) {
     this.target.tooltip.visible = false;
+    this.displayModel = model;
   }
 }

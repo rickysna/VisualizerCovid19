@@ -10,7 +10,8 @@ export default class App {
     View: BaseViewConstructor<V>,
     Model: M | BaseModelConstructor<M, any>,
   ) {
-    const controller = new Controller(Model, View);
+    const controller = new Controller();
+    controller.init(Model, View);
     this.controllers.push(controller);
   }
 }
