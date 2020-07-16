@@ -5,7 +5,7 @@ import { Color } from "@amcharts/amcharts4/core";
 import { MapPolygon } from "@amcharts/amcharts4/maps";
 import BaseComponent from "./BaseComponent";
 import { CountriesData, CountryData } from "../models";
-import { ChartComponentMoveAnimation } from "../events";
+import {ChartComponentMoveAnimation, MapReady} from "../events";
 import * as tools from "../libs/tools";
 import { TDisplayModel } from "../views/ChartView";
 
@@ -92,7 +92,10 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
       (ev) => this.events.triggerEvent(ChartComponentMoveAnimation, { data: ev.target }),
     );
 
-    this.target.events.on("inited", this.setStyles.bind(this));
+    this.target.events.on("inited", () => {
+      this.setStyles();
+      this.events.triggerEvent(MapReady);
+    });
 
     this.target.tooltip.events.on("shown", this.centralizeTooltipPosition.bind(this));
 

@@ -12,3 +12,5 @@ export const MapModelGetSelectedCountryID = "map_model_get_selected_country_id";
 export const RankingViewUpdateCountryID = "ranking_view_update_country_id";
 
 export const ChartComponentMoveAnimation = "chart_component_move_animation";
+
+export const MapReady = "may_ready";
