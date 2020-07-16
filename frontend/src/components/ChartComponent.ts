@@ -2,8 +2,10 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4maps from "@amcharts/amcharts4/maps";
 // eslint-disable-next-line camelcase
 import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
+import { MapPolygon } from "@amcharts/amcharts4/maps";
 import BaseComponent from "./BaseComponent";
 import { ChartComponentMoveAnimation } from "../events";
+import { TDisplayModel } from "../views/ChartView";
 
 export default class ChartComponent extends BaseComponent<am4maps.MapChart> {
   init(elementId: string): this {
@@ -41,7 +43,7 @@ export default class ChartComponent extends BaseComponent<am4maps.MapChart> {
   setStyles(): this {
     this.target.backgroundSeries.mapPolygons.template.polygon.fill = am4core.color("#000");
     this.target.backgroundSeries.mapPolygons.template.polygon.fillOpacity = 0.5;
-    this.target.padding(90, 160, 90, 0);
+    // this.target.padding(90, 160, 90, 0);
 
     return this;
   }
@@ -55,8 +57,8 @@ export default class ChartComponent extends BaseComponent<am4maps.MapChart> {
     return this;
   }
 
-  onCountryPolygonClicked(ev: any) {
-    const { visualLongitude, visualLatitude } = ev.target;
+  onCountryPolygonClicked(polygon: MapPolygon) {
+    const { visualLongitude, visualLatitude } = polygon;
     // rotate to country's location
     this.target.animate([{
       to: -visualLongitude,
@@ -66,5 +68,13 @@ export default class ChartComponent extends BaseComponent<am4maps.MapChart> {
       property: "deltaLatitude",
     }], 1000, am4core.ease.linear);
     this.target.goHome();
+  }
+
+  onResize(model: TDisplayModel) {
+    if (model === "desktop") {
+      this.target.padding(90, 100, 90, 30);
+    } else if (model === "mobile") {
+      this.target.padding(80, 0, 80, 0);
+    }
   }
 }

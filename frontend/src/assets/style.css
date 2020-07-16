@@ -37,12 +37,13 @@ p {
 }
 
 #chartdiv {
-    max-width: calc(50% + 100px);
+    width: calc(55% + 100px);
     height: 100%;
     max-height: 760px;
     min-height: 600px;
-    position: relative;
-    left: calc(50% - 100px);
+    position: fixed;
+    left: calc(45% - 100px);
+    z-index: 12;
 }
 
 #particles-js {
@@ -60,20 +61,11 @@ p {
     overflow: hidden;
 }
 
-/*.earth-overlay .flag {*/
-/*    width: 100%;*/
-/*    height: 0;*/
-/*    padding-bottom: 66.5%;*/
-/*    overflow: hidden;*/
-/*    position: relative;*/
-/*}*/
-
-.earth-overlay img {
+.earth-overlay .country-flag {
     width: 100%;
-    display: block;
-    /*opacity: 0.7;*/
-    /*left: 0;*/
-    /*top: 0;*/
+    height: 100px;
+    background-size: cover;
+    background-position: center;
 }
 
 .earth-overlay .title {
@@ -209,6 +201,7 @@ p {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    box-sizing: border-box;
 }
 
 .popup-container .popup-header {
@@ -352,7 +345,7 @@ h2.ranking__title {
     display: block;
     width: 40px;
     height: 40px;
-    background: #e6e7ed;
+    background-color: #e6e7ed;
     -moz-border-radius: 20px;
     -webkit-border-radius: 20px;
     background-position: 50% 50%;
@@ -381,4 +374,24 @@ h2.ranking__title {
 
 .ranking__container a {
     color: #fff;
+}
+
+@media only screen and (max-width: 1100px) {
+    .ranking__container {
+        display: none;
+    }
+    #footer {
+        display: none;
+    }
+    #chartdiv {
+        max-width: 100%;
+        height: 100%;
+        max-height: initial;
+        min-height: initial;
+        left: 0;
+        width: 100%;
+    }
+    .popup-wrapper {
+        width: 90%;
+    }
 }

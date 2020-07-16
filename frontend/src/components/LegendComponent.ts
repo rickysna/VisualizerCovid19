@@ -3,6 +3,7 @@ import * as am4maps from "@amcharts/amcharts4/maps";
 import { ValueAxisDataItem } from "@amcharts/amcharts4/charts";
 import BaseComponent from "./BaseComponent";
 import * as tools from "../libs/tools";
+import {TDisplayModel} from "../views/ChartView";
 
 export default class LegendComponent extends BaseComponent<am4maps.HeatLegend> {
   private axisRangeLabels: {
@@ -59,8 +60,8 @@ export default class LegendComponent extends BaseComponent<am4maps.HeatLegend> {
   setStyles(): this {
     this.target.align = "right";
     this.target.width = 250;
-    this.target.marginRight = -80;
-    this.target.marginBottom = -40;
+    this.target.marginRight = -40;
+    this.target.marginBottom = -60;
     this.target.valign = "bottom";
 
     const labelColor = am4core.color("#fff");
@@ -82,5 +83,13 @@ export default class LegendComponent extends BaseComponent<am4maps.HeatLegend> {
       this.axisRangeLabels.maxRange.label.x = containerSize.width - (labelSize.width / 2);
     });
     return this;
+  }
+
+  onResize(model: TDisplayModel) {
+    if (model === "desktop") {
+      this.target.visible = true;
+    } else if (model === "mobile") {
+      this.target.visible = false;
+    }
   }
 }

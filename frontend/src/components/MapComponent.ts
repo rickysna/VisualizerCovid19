@@ -1,13 +1,13 @@
 import * as am4maps from "@amcharts/amcharts4/maps";
-import * as am4cores from "@amcharts/amcharts4/core";
+import * as am4core from "@amcharts/amcharts4/core";
 import { iRGB } from "@amcharts/amcharts4/.internal/core/utils/Colors";
 import { Color } from "@amcharts/amcharts4/core";
 import { MapPolygon } from "@amcharts/amcharts4/maps";
 import BaseComponent from "./BaseComponent";
 import { CountriesData, CountryData } from "../models";
-// import Tooltip from "./map/Tooltip";
 import { ChartComponentMoveAnimation } from "../events";
 import * as tools from "../libs/tools";
+import { TDisplayModel } from "../views/ChartView";
 
 interface IMapColorDefinitionParameter {
   itemsPercent: number, // <= 1 本分组占总数据句比例
@@ -26,7 +26,10 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
 
   mapPolygons: {[key:string]: MapPolygon} = {};
 
-  constructor(private renderData: CountriesData, private sortedData: CountryData[]) {
+  constructor(
+    private renderData: CountriesData,
+    private sortedData: CountryData[],
+  ) {
     super();
   }
 
@@ -49,8 +52,8 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
   }
 
   setStyles(): this {
-    const strokeColor = am4cores.color("#450000"); // 区块边框颜色
-    let backgroundColor = am4cores.color("#242424");
+    const strokeColor = am4core.color("#450000"); // 区块边框颜色
+    let backgroundColor = am4core.color("#242424");
 
     this.target.mapPolygons.each((mapPolygon) => {
       // @ts-ignore
@@ -69,6 +72,7 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
       mapPolygon.tooltip.background.disabled = true;
       mapPolygon.tooltipPosition = "fixed";
       mapPolygon.showTooltipOn = "hit";
+      mapPolygon.tooltip.pointerOrientation = "down";
       mapPolygon.tooltipHTML = this.getTooltipTemplate(countryData);
 
       this.mapPolygons[countryID] = mapPolygon;
@@ -80,21 +84,12 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
   registerHooks(): this {
     this.target.mapPolygons.template.events.on(
       "hit",
-      (ev) => this.events.triggerEvent(ChartComponentMoveAnimation, { data: ev }),
+      (ev) => this.events.triggerEvent(ChartComponentMoveAnimation, { data: ev.target }),
     );
 
     this.target.events.on("inited", this.setStyles.bind(this));
 
-    this.target.tooltip.events.onAll(
-      (name, ev) => {
-        this.centralizeTooltipPosition(ev);
-        this.killToolTipAnimations(ev);
-      },
-    );
-
-    this.target.tooltip.events.on("shown", (ev) => this.showTooltip(ev));
-
-    this.target.tooltip.events.on("hidden", (ev) => this.hideTooltip(ev));
+    this.target.tooltip.events.on("shown", this.centralizeTooltipPosition.bind(this));
 
     return this;
   }
@@ -161,10 +156,10 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
       ) {
         const alpha = ((index - min) / (max - min) / 2).toFixed(2);
 
-        return am4cores.color({ ...element.levelBasicColor, a: Number(alpha) + 0.5 });
+        return am4core.color({ ...element.levelBasicColor, a: Number(alpha) + 0.5 });
       }
     }
-    return am4cores.color("#242424");
+    return am4core.color("#242424");
   }
 
   private getTooltipTemplate(data: CountryData | undefined) {
@@ -185,7 +180,7 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
     }
 
     const {
-      flag, name, cases, reports, recovered,
+      name, cases, reports, recovered, flag,
     } = data;
     const { dates, confirmed, deaths } = data.timeseries;
     const lastDate = new Date(dates.slice(-1)[0]);
@@ -200,45 +195,41 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
     const dcDifferenceTemplate = dcDifference ? `<span class="changed">${dcMathPrefix}${dcDifference} <span class="time">(since ${passedTime})</span></span><br>` : "";
 
     return `
-        <div class="earth-overlay">
-            <img src="${flag}">
-            <div class="title">
-                <span>
-                    <em>${name}</em>
-                    <span><br>
-                        <span class="tiny">${cases} total cases</span>
-                    </span>
-                </span>
-            </div>
-            <div class="info">
-                <span><span class="_active">${reports}</span> active</span><br>
-                ${rcDifferenceTemplate}
-                <span><span class="_dead">${data.deaths}</span> deceased</span><br>
-                ${dcDifferenceTemplate}
-                <span><span class="_recovered">${recovered}</span> recovered</span><br>
-            </div>
+      <div class="earth-overlay">
+        <div class="country-flag" style="background-image: url(${flag});"></div>
+        <div class="title">
+          <span>
+            <em>${name}</em>
+            <span><br>
+              <span class="tiny">${cases} total cases</span>
+            </span>
+          </span>
         </div>
+        <div class="info">
+          <span><span class="_active">${reports}</span> active</span><br>
+          ${rcDifferenceTemplate}
+          <span><span class="_dead">${data.deaths}</span> deceased</span><br>
+          ${dcDifferenceTemplate}
+          <span><span class="_recovered">${recovered}</span> recovered</span><br>
+        </div>
+      </div>
     `;
   }
 
-  private killToolTipAnimations(ev: any) {
-    ev.target.animations.forEach((animation: any) => animation.kill());
-  }
+  private centralizeTooltipPosition() {
+    const containerBox = this.target.dom.getBBox();
+    // const tooltipBox = this.target.tooltip.dom.getBBox();
 
-  private centralizeTooltipPosition(ev: any) {
-    const boxSize = this.target.dom.getBBox();
-    const x = boxSize.x + boxSize.width / 2;
-    const y = boxSize.y + boxSize.height * 0.6;
-    ev.target.dom.setAttribute("transform", `translate(${x},${y})`);
-  }
+    const axisX = containerBox.width / 2;
+    const axisY = containerBox.y + containerBox.height / 2;
 
-  private showTooltip(ev: any) {
-    ev.target.dom.querySelector("foreignObject").setAttribute("height", "100%");
-    ev.target.opacity = 1;
-  }
-
-  private hideTooltip(ev: any) {
-    ev.target.opacity = 0;
+    this.target.tooltip.animate([{
+      to: axisX,
+      property: "x",
+    }, {
+      to: axisY,
+      property: "y",
+    }], 1000, am4core.ease.linear);
   }
 
   selectCountry(countryID: string) {
@@ -255,5 +246,9 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
       mapPolygon.dom.dispatchEvent(eventPointerdown);
       document.dispatchEvent(eventMouseenter);
     }
+  }
+
+  onResize(model: TDisplayModel) {
+    this.target.tooltip.visible = false;
   }
 }

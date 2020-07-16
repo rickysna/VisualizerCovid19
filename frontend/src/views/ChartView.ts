@@ -4,7 +4,11 @@ import MapComponent from "../components/MapComponent";
 import { IChartData } from "../controllers/ChartController";
 import LegendComponent from "../components/LegendComponent";
 
+export type TDisplayModel = "desktop" | "mobile";
+
 export default class ChartView extends BaseView<IChartData> {
+  displayModel: TDisplayModel;
+
   components: {
     chart: ChartComponent,
     map: MapComponent,
@@ -38,11 +42,31 @@ export default class ChartView extends BaseView<IChartData> {
       .registerHooks();
 
     this.components = { chart, map, legend };
+
+    this.onResize();
   }
 
   selectCountry(id: string) {
     if (this.components.map) {
       this.components.map.selectCountry(id);
+    }
+  }
+
+  registerHooks() {
+    window.addEventListener("resize", this.onResize.bind(this));
+  }
+
+  private onResize() {
+    if (document.body.offsetWidth < 1100 && this.displayModel !== "mobile") {
+      this.displayModel = "mobile";
+      this.components.legend.onResize(this.displayModel);
+      this.components.map.onResize(this.displayModel);
+      this.components.chart.onResize(this.displayModel);
+    } else if (document.body.offsetWidth >= 1100 && this.displayModel !== "desktop") {
+      this.displayModel = "desktop";
+      this.components.legend.onResize(this.displayModel);
+      this.components.map.onResize(this.displayModel);
+      this.components.chart.onResize(this.displayModel);
     }
   }
 }
