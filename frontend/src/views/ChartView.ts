@@ -24,15 +24,15 @@ export default class ChartView extends BaseView<IChartData> {
       .setStyles()
       .registerHooks();
 
-    const { countries, sortedCountries } = this.data;
+    const { countries, countriesSortedByActive } = this.data.mapData;
 
-    const map = new MapComponent(countries, sortedCountries);
+    const map = new MapComponent(countries, countriesSortedByActive);
     map
       .init(chart.target)
       .setConfiguration()
       .registerHooks();
 
-    const maxCases = sortedCountries[0].cases;
+    const maxCases = countries[countriesSortedByActive[0]].cases;
     const legend = new LegendComponent(0, maxCases);
     legend
       .init(chart.target)

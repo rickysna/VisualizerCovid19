@@ -1,5 +1,5 @@
 import BaseView from "./BaseView";
-import { CountryData } from "../models";
+import {CountryData, MapData} from "../models";
 import * as tools from "../libs/tools";
 import { IRankingData } from "../controllers/RankingController";
 import { RankingViewUpdateCountryID } from "../events";
@@ -35,8 +35,7 @@ export default class RankingView extends BaseView<IRankingData> {
   }
 
   updateView() {
-    const { countries } = this.data;
-    const itemsTpl = this.renderItems(countries);
+    const itemsTpl = this.renderItems(this.data.mapData);
     const node = this.viewNode.querySelector(".ranking__list");
 
     if (node) {
@@ -44,10 +43,13 @@ export default class RankingView extends BaseView<IRankingData> {
     }
   }
 
-  renderItems(data: CountryData[]) {
+  renderItems(mapData: MapData) {
+    const { countries, countriesSortedByActive } = mapData;
+
     let listHTML = "";
-    data.forEach((_data) => {
-      listHTML += this.getItemTemplate(_data);
+    countriesSortedByActive.forEach((countryName) => {
+      const data = countries[countryName];
+      listHTML += this.getItemTemplate(data);
     });
     return listHTML;
   }

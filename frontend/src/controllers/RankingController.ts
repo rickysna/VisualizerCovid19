@@ -1,24 +1,20 @@
 import BaseController from "./BaseController";
 import MapModel from "../models/MapModel";
-import { CountriesData, CountryData } from "../models";
+import { MapData } from "../models";
 import RankingView from "../views/RankingView";
 import {
-  MapModelDispatchCountriesDataByCases, MapModelGetCountriesDataByCases,
+  MapModelGetMapData,
   MapModelUpdateSelectedCountryID,
   RankingViewUpdateCountryID,
 } from "../events";
 
 export interface IRankingData {
-  countries: CountryData[],
+  mapData: MapData,
 }
 
 export default class RankingController extends BaseController<MapModel, RankingView, IRankingData> {
   get elementId() {
     return "ranking";
-  }
-
-  onReady() {
-    this.events.triggerEvent(MapModelDispatchCountriesDataByCases);
   }
 
   registerHooks(): void {
@@ -27,16 +23,16 @@ export default class RankingController extends BaseController<MapModel, RankingV
       (id: string) => this.updateSelectedCountryID(id),
     );
 
-    this.events.addEventListener(MapModelGetCountriesDataByCases, this.addCountriesData.bind(this));
+    this.events.addEventListener(MapModelGetMapData, this.addMapData.bind(this));
   }
 
   updateSelectedCountryID(id: string) {
     this.events.triggerEvent(MapModelUpdateSelectedCountryID, { data: id });
   }
 
-  addCountriesData(countries: CountriesData[]) {
-    if (typeof countries === "object") {
-      this.viewDataFields.addFieldData("countries", countries);
+  addMapData(data: MapData) {
+    if (typeof data === "object") {
+      this.viewDataFields.addFieldData("mapData", data);
       this.updateView();
     }
   }

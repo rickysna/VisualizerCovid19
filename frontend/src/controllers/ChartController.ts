@@ -2,16 +2,13 @@ import BaseController from "./BaseController";
 import MapModel from "../models/MapModel";
 import ChartView from "../views/ChartView";
 import {
-  MapModelDispatchCountriesData, MapModelDispatchCountriesDataByCases,
-  MapModelGetCountriesData,
-  MapModelGetCountriesDataByCases,
+  MapModelGetMapData,
   MapModelGetSelectedCountryID,
 } from "../events";
-import { CountriesData, CountryData } from "../models";
+import { MapData } from "../models";
 
 export interface IChartData {
-  countries: CountriesData,
-  sortedCountries: CountryData[]
+  mapData: MapData,
 }
 
 export default class ChartController extends BaseController<MapModel, ChartView, IChartData> {
@@ -26,15 +23,10 @@ export default class ChartController extends BaseController<MapModel, ChartView,
   registerHooks() {
     this.events.addEventListener(MapModelGetSelectedCountryID, this.selectCountry.bind(this));
 
-    this.events.addEventListener(MapModelGetCountriesData, this.addCountriesData.bind(this, "countries"));
-
-    this.events.addEventListener(MapModelGetCountriesDataByCases, this.addCountriesData.bind(this, "sortedCountries"));
+    this.events.addEventListener(MapModelGetMapData, this.addMapData.bind(this));
   }
 
   onReady(): void {
-    this.events.triggerEvent(MapModelDispatchCountriesData);
-    this.events.triggerEvent(MapModelDispatchCountriesDataByCases);
-
     this.updateView();
   }
 
@@ -42,9 +34,9 @@ export default class ChartController extends BaseController<MapModel, ChartView,
     this.view.selectCountry(id);
   }
 
-  addCountriesData(fieldName: string, data: CountriesData) {
+  addMapData(data: MapData) {
     if (typeof data === "object") {
-      this.viewDataFields.addFieldData(fieldName, data);
+      this.viewDataFields.addFieldData("mapData", data);
     }
   }
 }

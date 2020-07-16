@@ -4,8 +4,8 @@ import { iRGB } from "@amcharts/amcharts4/.internal/core/utils/Colors";
 import { Color } from "@amcharts/amcharts4/core";
 import { MapPolygon } from "@amcharts/amcharts4/maps";
 import BaseComponent from "./BaseComponent";
-import { CountriesData, CountryData } from "../models";
-import {ChartComponentMoveAnimation, MapReady} from "../events";
+import { CountriesData, CountriesSortedByActive, CountryData } from "../models";
+import { ChartComponentMoveAnimation, MapReady } from "../events";
 import * as tools from "../libs/tools";
 import { TDisplayModel } from "../views/ChartView";
 
@@ -30,7 +30,7 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
 
   constructor(
     private renderData: CountriesData,
-    private sortedData: CountryData[],
+    private dataSort: CountriesSortedByActive,
   ) {
     super();
   }
@@ -67,7 +67,7 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
       const countryData = this.renderData[countryID];
 
       if (countryData) {
-        const sortIndex = this.sortedData.length - this.sortedData.indexOf(countryData) - 1;
+        const sortIndex = this.dataSort.length - this.dataSort.indexOf(countryID) - 1;
         backgroundColor = this.generateColorObject(sortIndex);
       }
       mapPolygon.fill = backgroundColor;
@@ -138,7 +138,7 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
       },
     ];
 
-    const countriesAmount = this.sortedData.length;
+    const countriesAmount = this.dataSort.length;
     let percentSub = 0;
     this.mapColorDefinition = colorParams.map((param) => {
       const minPercent = percentSub;
