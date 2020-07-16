@@ -12,6 +12,7 @@ module.exports = (env) => {
     devServer: {
       contentBase: path.resolve(__dirname, "dist"),
       port: 4000,
+      host: "0.0.0.0",
     },
     output: controller.getOutputConfig(env),
     optimization: {
