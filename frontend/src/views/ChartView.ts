@@ -3,6 +3,7 @@ import ChartComponent from "../components/ChartComponent";
 import MapComponent from "../components/MapComponent";
 import { IChartData } from "../controllers/ChartController";
 import LegendComponent from "../components/LegendComponent";
+import { am4core, am4themesAnimated } from "../libs/am4chart";
 
 export type TDisplayModel = "desktop" | "mobile";
 
@@ -16,6 +17,8 @@ export default class ChartView extends BaseView<IChartData> {
   };
 
   onViewReady() {
+    am4core.useTheme(am4themesAnimated);
+
     const chart = new ChartComponent();
     chart
       .init("chartdiv")

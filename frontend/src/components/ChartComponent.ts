@@ -1,13 +1,10 @@
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4maps from "@amcharts/amcharts4/maps";
-// eslint-disable-next-line camelcase
-import am4geodata_worldLow from "@amcharts/amcharts4-geodata/worldLow";
-import { MapPolygon } from "@amcharts/amcharts4/maps";
+import type { MapChart, MapPolygon } from "@amcharts/amcharts4/maps";
+import { am4core, am4maps, am4geodataWorldLow } from "../libs/am4chart";
 import BaseComponent from "./BaseComponent";
 import { ChartComponentMoveAnimation } from "../events";
 import { TDisplayModel } from "../views/ChartView";
 
-export default class ChartComponent extends BaseComponent<am4maps.MapChart> {
+export default class ChartComponent extends BaseComponent<MapChart> {
   init(elementId: string): this {
     this.target = am4core.create(elementId, am4maps.MapChart);
 
@@ -17,7 +14,7 @@ export default class ChartComponent extends BaseComponent<am4maps.MapChart> {
   setConfiguration(): this {
     try {
       // eslint-disable-next-line camelcase
-      this.target.geodata = am4geodata_worldLow;
+      this.target.geodata = am4geodataWorldLow;
     } catch (e) {
       this.target.raiseCriticalError(
         new Error("Map geodata could not be loaded. Please download the latest <a href=\"https://www.amcharts.com/download/download-v4/\">amcharts geodata</a> and extract its contents into the same directory as your amCharts files."),
@@ -72,9 +69,9 @@ export default class ChartComponent extends BaseComponent<am4maps.MapChart> {
 
   onResize(model: TDisplayModel) {
     if (model === "desktop") {
-      this.target.padding(90, 100, 90, 30);
+      this.target.padding(490, 100, 90, 30);
     } else if (model === "mobile") {
-      this.target.padding(80, 0, 80, 0);
+      this.target.padding(480, 0, 80, 0);
     }
   }
 }

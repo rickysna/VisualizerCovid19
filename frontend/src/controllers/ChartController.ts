@@ -26,10 +26,6 @@ export default class ChartController extends BaseController<MapModel, ChartView,
     this.events.addEventListener(MapModelGetMapData, this.addMapData.bind(this));
   }
 
-  onReady(): void {
-    this.updateView();
-  }
-
   selectCountry(id: string) {
     this.view.selectCountry(id);
   }
@@ -37,6 +33,7 @@ export default class ChartController extends BaseController<MapModel, ChartView,
   addMapData(data: MapData) {
     if (typeof data === "object") {
       this.viewDataFields.addFieldData("mapData", data);
+      this.updateView();
     }
   }
 }

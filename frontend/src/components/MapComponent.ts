@@ -1,8 +1,9 @@
-import * as am4maps from "@amcharts/amcharts4/maps";
-import * as am4core from "@amcharts/amcharts4/core";
-import { iRGB } from "@amcharts/amcharts4/.internal/core/utils/Colors";
-import { Color } from "@amcharts/amcharts4/core";
-import { MapPolygon } from "@amcharts/amcharts4/maps";
+import type { MapPolygonSeries, MapPolygon, MapChart } from "@amcharts/amcharts4/maps";
+import type { iRGB } from "@amcharts/amcharts4/.internal/core/utils/Colors";
+import type { Color } from "@amcharts/amcharts4/core";
+// @ts-ignore
+import { debounce } from "debounce";
+import { am4core, am4maps } from "../libs/am4chart";
 import BaseComponent from "./BaseComponent";
 import { CountriesData, CountriesSortedByActive, CountryData } from "../models";
 import { ChartComponentMoveAnimation, MapReady } from "../events";
@@ -21,12 +22,14 @@ interface IMapColorDefinition extends IMapColorDefinitionParameter {
   }
 }
 
-export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries> {
-  displayModel: TDisplayModel;
+export default class MapComponent extends BaseComponent<MapPolygonSeries> {
+  private displayModel: TDisplayModel;
 
-  mapColorDefinition: IMapColorDefinition[] = [];
+  private mapColorDefinition: IMapColorDefinition[] = [];
 
-  mapPolygons: {[key:string]: MapPolygon} = {};
+  private mapPolygons: {[key:string]: MapPolygon} = {};
+
+  private containerBox:DOMRect;
 
   constructor(
     private renderData: CountriesData,
@@ -35,7 +38,7 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
     super();
   }
 
-  init(chart: am4maps.MapChart): this {
+  init(chart: MapChart): this {
     this.target = chart.series.push(new am4maps.MapPolygonSeries());
 
     return this;
@@ -95,11 +98,36 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
     this.target.events.on("inited", () => {
       this.setStyles();
       this.events.triggerEvent(MapReady);
+      this.containerBox = this.target.dom.getBBox();
     });
 
-    this.target.tooltip.events.on("shown", this.centralizeTooltipPosition.bind(this));
+    this.target.tooltip.adapter.add("pixelX", () => this.centralizeTooltip("pixelX"));
+    this.target.tooltip.adapter.add("pixelY", () => this.centralizeTooltip("pixelY"));
 
     return this;
+  }
+
+  private centralizeTooltip(type: "pixelX" | "pixelY"): number {
+    const {
+      x, y, width, height,
+    } = this.containerBox;
+
+    let offsetX = 30;
+    const offsetY = 490;
+
+    if (this.displayModel === "mobile") {
+      offsetX = 0;
+    }
+
+    if (type === "pixelX") {
+      return x + width / 2 + offsetX;
+    }
+
+    if (type === "pixelY") {
+      return y + height / 2 + offsetY;
+    }
+
+    return 0;
   }
 
   private setColorDefinition() {
@@ -224,25 +252,9 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
     `;
   }
 
-  private centralizeTooltipPosition() {
-    const containerBox = this.target.dom.getBBox();
-
-    let offsetX = 30;
-    const offsetY = 90;
-
-    if (this.displayModel === "mobile") {
-      offsetX = 0;
-    }
-
-    const axisX = containerBox.x + containerBox.width / 2 + offsetX;
-    const axisY = containerBox.y + containerBox.height / 2 + offsetY;
-
-    this.target.tooltip.dom.setAttribute("transform", `translate(${axisX}, ${axisY})`);
-  }
-
   selectCountry(countryID: string) {
     const mapPolygon = this.mapPolygons[countryID];
-    if (mapPolygon instanceof MapPolygon) {
+    if (mapPolygon instanceof am4maps.MapPolygon) {
       const eventPointerdown = new Event("pointerdown");
       const eventMouseenter = new Event("mouseenter");
       // @ts-ignore
@@ -259,5 +271,6 @@ export default class MapComponent extends BaseComponent<am4maps.MapPolygonSeries
   onResize(model: TDisplayModel) {
     this.target.tooltip.visible = false;
     this.displayModel = model;
+    this.containerBox = this.target.dom.getBBox();
   }
 }

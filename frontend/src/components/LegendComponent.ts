@@ -1,11 +1,11 @@
-import * as am4core from "@amcharts/amcharts4/core";
-import * as am4maps from "@amcharts/amcharts4/maps";
-import { ValueAxisDataItem } from "@amcharts/amcharts4/charts";
+import type { HeatLegend, MapChart, MapPolygonSeries } from "@amcharts/amcharts4/maps";
+import type { ValueAxisDataItem } from "@amcharts/amcharts4/charts";
+import { am4core, am4maps } from "../libs/am4chart";
 import BaseComponent from "./BaseComponent";
 import * as tools from "../libs/tools";
-import {TDisplayModel} from "../views/ChartView";
+import { TDisplayModel } from "../views/ChartView";
 
-export default class LegendComponent extends BaseComponent<am4maps.HeatLegend> {
+export default class LegendComponent extends BaseComponent<HeatLegend> {
   private axisRangeLabels: {
     minRange: ValueAxisDataItem,
     maxRange: ValueAxisDataItem,
@@ -15,13 +15,13 @@ export default class LegendComponent extends BaseComponent<am4maps.HeatLegend> {
     super();
   }
 
-  init(chart: am4maps.MapChart):this {
+  init(chart: MapChart):this {
     this.target = chart.createChild(am4maps.HeatLegend);
 
     return this;
   }
 
-  setConfiguration(polygonSeries: am4maps.MapPolygonSeries): this {
+  setConfiguration(polygonSeries: MapPolygonSeries): this {
     this.target.series = polygonSeries;
 
     polygonSeries.heatRules.push({
@@ -68,7 +68,6 @@ export default class LegendComponent extends BaseComponent<am4maps.HeatLegend> {
     this.axisRangeLabels.minRange.label.fill = labelColor;
     this.axisRangeLabels.maxRange.label.fill = labelColor;
 
-
     const markersTemplate = this.target.markers.template;
     markersTemplate.stroke = am4core.color("#bab89b");
     markersTemplate.cornerRadius(4, 4, 4, 4);
@@ -80,7 +79,11 @@ export default class LegendComponent extends BaseComponent<am4maps.HeatLegend> {
     this.target.events.on("ready", () => {
       const containerSize = this.target.dom.getBBox();
       const labelSize = this.axisRangeLabels.maxRange.label.dom.getBBox();
-      this.axisRangeLabels.maxRange.label.x = containerSize.width - (labelSize.width / 2);
+      const minRangeLabelX = 10;
+      const maxRangeLabelX = containerSize.width - labelSize.width - 10;
+      const labelY = -20;
+      this.axisRangeLabels.minRange.label.dom.setAttribute("transform", `translate(${minRangeLabelX}, ${labelY})`);
+      this.axisRangeLabels.maxRange.label.dom.setAttribute("transform", `translate(${maxRangeLabelX}, ${labelY})`);
     });
     return this;
   }
