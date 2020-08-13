@@ -52,5 +52,6 @@ package:
     - webpack.config.js
     - tsconfig.json
     - cypress.json
+    - node_modules/**
   include:
     - node_modules/node-fetch/**

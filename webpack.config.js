@@ -1,9 +1,12 @@
 const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const packageJSON = require("./package");
+const webpack = require("webpack");
 
 module.exports = (env) => {
-  const mode = env.NODE_ENV || "dev";
+  const mode = env.NODE_ENV;
   const controller = require(`./webpack/webpack.${mode}`)();
-
+  const controllerPlugins = controller.getWebpackPlugins(env);
   return {
     entry: {
       main: path.resolve(__dirname, "./frontend/index.ts"),
@@ -12,8 +15,8 @@ module.exports = (env) => {
     devServer: {
       contentBase: path.resolve(__dirname, "dist"),
       port: 4000,
-      host: "0.0.0.0",
     },
+    mode: controller.getModel(),
     output: controller.getOutputConfig(env),
     optimization: {
       splitChunks: {
@@ -26,8 +29,27 @@ module.exports = (env) => {
         },
       },
     },
-    // mode: "development",
-    plugins: controller.getWebpackPlugins(env),
+    plugins: [
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 1, // disable creating additional chunks
+      }),
+      new HtmlWebpackPlugin({
+        filename: "index.html",
+        template: path.join(__dirname, "./frontend/index.html"),
+        templateParameters: {
+          url: packageJSON.url,
+          description: packageJSON.description,
+          title: packageJSON.title,
+          NODE_ENV: mode,
+        },
+        title: packageJSON.title,
+        meta: {
+          keywords: packageJSON.keywords.join(","),
+          description: packageJSON.description,
+          author: packageJSON.author,
+        },
+      }),
+    ].concat(controllerPlugins),
     module: {
       rules: [
         {
