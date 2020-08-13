@@ -1,6 +1,6 @@
 import data from "../API/data";
-import { CountriesData, MapData } from "./index";
-import BaseModel from "./BaseModel";
+import { MapData } from "./index";
+import BaseModel, { preRequest } from "./BaseModel";
 import {
   MapModelDispatchCountriesData,
   MapModelDispatchMapData,
@@ -25,10 +25,12 @@ export default class MapModel extends BaseModel<MapData> {
     });
   }
 
+  @preRequest
   getMapData() {
     this.events.triggerEvent(MapModelGetMapData, { data: this.data });
   }
 
+  @preRequest
   getCountriesData() {
     this.events.triggerEvent(MapModelGetCountriesData, { data: this.data.countries });
   }

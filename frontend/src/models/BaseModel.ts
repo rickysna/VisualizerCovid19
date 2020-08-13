@@ -7,8 +7,11 @@ export function preRequest(
   descriptor: PropertyDescriptor,
 ) {
   const primitive = descriptor.value;
-  descriptor.value = function invoke(...args: any[]) {
-    return this.fetchData().then(() => primitive.apply(this, args));
+  descriptor.value = async function invoke(...args: any[]) {
+    if (this.data === undefined) {
+      this.data = await this.fetchData();
+    }
+    primitive.apply(this, args);
   };
 }
 
